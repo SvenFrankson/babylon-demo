@@ -1,5 +1,5 @@
 # babylon-demo
-Babylon demo for academic purpose.
+BabylonJS demo for academic purpose.
 
 # Run the project
 
