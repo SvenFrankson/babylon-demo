@@ -2,7 +2,7 @@
 class Materials {
   public static List : Array<BABYLON.Material> = new Array<BABYLON.Material>();
 
-  static initialize(): void {
+  static Initialize(): void {
     let colorNames : Array<string> = ["red", "green", "blue"];
     Materials.List[colorNames[0]] = new BABYLON.StandardMaterial(colorNames[0], Game.Instance.getScene());
     Materials.List[colorNames[0]].diffuseColor = new BABYLON.Color3(1.0, 0, 0);

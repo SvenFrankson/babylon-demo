@@ -48,7 +48,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   game.createScene();
   game.animate();
-  Materials.initialize();
+  Materials.Initialize();
 
   // debug
   new GameObject(new BABYLON.Vector3(0, 0, 0), 0, "red");

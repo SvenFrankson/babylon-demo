@@ -33,7 +33,7 @@ window.addEventListener("DOMContentLoaded", function () {
     var game = new Game("renderCanvas");
     game.createScene();
     game.animate();
-    Materials.initialize();
+    Materials.Initialize();
     new GameObject(new BABYLON.Vector3(0, 0, 0), 0, "red");
     new GameObject(new BABYLON.Vector3(1, 0, 0), 0, "green");
     new GameObject(new BABYLON.Vector3(0, 1, 0), 0, "blue");

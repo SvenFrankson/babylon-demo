@@ -6,14 +6,15 @@ var GameObject = (function () {
         this._pos = pos;
         this._rot = rot;
         this._ref = ref;
-        this.initialize();
+        this.Initialize();
     }
     GameObject.prototype.getPos = function () {
         return this._pos;
     };
-    GameObject.prototype.initialize = function () {
+    GameObject.prototype.Initialize = function () {
         this._mesh = BABYLON.MeshBuilder.CreateBox("GameObject_" + this._id, { size: 1 }, Game.Instance.getScene());
         this._mesh.position = this._pos;
+        this._mesh.rotation = new BABYLON.Vector3(0, Math.PI / 2 * this._rot, 0);
         this._mesh.renderOutline = true;
         this._mesh.outlineWidth = 0.02;
         this._mesh.outlineColor = new BABYLON.Color3(0, 0, 0);

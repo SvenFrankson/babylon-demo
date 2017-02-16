@@ -4,6 +4,10 @@ var Editor = (function () {
     Editor.setRef = function (ref) {
         Editor._ref = ref;
     };
+    Editor.rotate = function () {
+        Editor._rot += 1;
+        Editor._rot = Editor._rot % 4;
+    };
     Editor.OnClick = function (evt) {
         Editor.GetRelativeMousePos(evt, Editor.PutMeshAtPos);
     };
@@ -24,7 +28,7 @@ var Editor = (function () {
                     var gameObject = GameObject.FindByMesh(mesh);
                     if (gameObject) {
                         var newPos = Editor.GetCreatePos(gameObject.getPos(), pickResult.pickedPoint);
-                        new GameObject(newPos, 0, Editor._ref);
+                        new GameObject(newPos, Editor._rot, Editor._ref);
                     }
                 }
             }
@@ -68,6 +72,7 @@ var Editor = (function () {
     };
     return Editor;
 }());
+Editor._rot = 0;
 window.addEventListener("click", Editor.OnClick);
 window.addEventListener("DOMContentLoaded", function () {
     document.getElementById("red").addEventListener("click", function () {
@@ -78,5 +83,8 @@ window.addEventListener("DOMContentLoaded", function () {
     });
     document.getElementById("blue").addEventListener("click", function () {
         Editor.setRef("blue");
+    });
+    document.getElementById("rotate").addEventListener("click", function () {
+        Editor.rotate();
     });
 });

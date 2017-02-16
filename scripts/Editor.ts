@@ -6,6 +6,12 @@ class Editor {
     Editor._ref = ref;
   }
 
+  private static _rot : number = 0;
+  public static rotate(): void {
+    Editor._rot += 1;
+    Editor._rot = Editor._rot % 4;
+  }
+
   public static OnClick(evt : MouseEvent): void {
     Editor.GetRelativeMousePos(evt, Editor.PutMeshAtPos);
   }
@@ -32,7 +38,7 @@ class Editor {
           // if GameObject has been found.
           if (gameObject) {
             let newPos : BABYLON.Vector3 = Editor.GetCreatePos(gameObject.getPos(), pickResult.pickedPoint);
-            new GameObject(newPos, 0, Editor._ref);
+            new GameObject(newPos, Editor._rot, Editor._ref);
           }
         }
       }
@@ -86,5 +92,8 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   document.getElementById("blue").addEventListener("click", () => {
     Editor.setRef("blue");
+  });
+  document.getElementById("rotate").addEventListener("click", () => {
+    Editor.rotate();
   });
 });

@@ -1,7 +1,7 @@
 var Materials = (function () {
     function Materials() {
     }
-    Materials.initialize = function () {
+    Materials.Initialize = function () {
         var colorNames = ["red", "green", "blue"];
         Materials.List[colorNames[0]] = new BABYLON.StandardMaterial(colorNames[0], Game.Instance.getScene());
         Materials.List[colorNames[0]].diffuseColor = new BABYLON.Color3(1.0, 0, 0);
