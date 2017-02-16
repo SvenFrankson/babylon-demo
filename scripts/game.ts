@@ -1,3 +1,4 @@
+/// <reference path="../lib/babylon.2.4.d.ts"/>
 class Game {
 
   public static Instance: Game;
