@@ -1,6 +1,11 @@
 var Meshes = (function () {
     function Meshes() {
     }
+    Meshes.Initialize = function () {
+        var dataNames = ["cube", "s-bar", "m-bar", "l-bar"];
+        Meshes.List[dataNames[0]] = Meshes.CubeData();
+        Meshes.List[dataNames[1]] = Meshes.SBarData();
+    };
     Meshes.PushQuad = function (vertices, a, b, c, d, positions, indices) {
         var index = positions.length / 3;
         for (var n in vertices[a]) {
@@ -30,7 +35,7 @@ var Meshes = (function () {
         indices.push(index + 2);
         indices.push(index);
     };
-    Meshes.CreateCube = function () {
+    Meshes.CubeData = function () {
         var cubeData = new BABYLON.VertexData();
         var vertices = new Array();
         var positions = new Array();
@@ -56,7 +61,7 @@ var Meshes = (function () {
         cubeData.normals = normals;
         return cubeData;
     };
-    Meshes.CreateSBar = function () {
+    Meshes.SBarData = function () {
         var cubeData = new BABYLON.VertexData();
         var vertices = new Array();
         var positions = new Array();
@@ -84,3 +89,4 @@ var Meshes = (function () {
     };
     return Meshes;
 }());
+Meshes.List = new Array();

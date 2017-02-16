@@ -34,9 +34,8 @@ window.addEventListener("DOMContentLoaded", function () {
     game.createScene();
     game.animate();
     Materials.Initialize();
-    new GameObject(new BABYLON.Vector3(0, 0, 0), 0, "red");
-    new GameObject(new BABYLON.Vector3(1, 0, 0), 0, "green");
-    new GameObject(new BABYLON.Vector3(0, 1, 0), 0, "blue");
-    new GameObject(new BABYLON.Vector3(0, 0, 1), 0, "noRef");
-    new GameObject(new BABYLON.Vector3(2, 3, 4), 0, "noRef");
+    Meshes.Initialize();
+    new GameObject(new BABYLON.Vector3(0, 0, 0), 0, "cube", "red");
+    new GameObject(new BABYLON.Vector3(1, 0, 0), 0, "s-bar", "green");
+    new GameObject(new BABYLON.Vector3(0, 1, 0), 0, "cube", "blue");
 });

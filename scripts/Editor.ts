@@ -1,9 +1,14 @@
 /// <reference path="../lib/babylon.2.4.d.ts"/>
 class Editor {
 
-  private static _ref : string;
+  private static _ref : string = "cube";
   public static setRef(ref : string): void {
     Editor._ref = ref;
+  }
+
+  private static _color : string = "red";
+  public static setColor(col : string): void {
+    Editor._color = col;
   }
 
   private static _rot : number = 0;
@@ -38,7 +43,7 @@ class Editor {
           // if GameObject has been found.
           if (gameObject) {
             let newPos : BABYLON.Vector3 = Editor.GetCreatePos(gameObject.getPos(), pickResult.pickedPoint);
-            new GameObject(newPos, Editor._rot, Editor._ref);
+            new GameObject(newPos, Editor._rot, Editor._ref, Editor._color);
           }
         }
       }
@@ -85,15 +90,21 @@ class Editor {
 window.addEventListener("click", Editor.OnClick);
 window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("red").addEventListener("click", () => {
-    Editor.setRef("red");
+    Editor.setColor("red");
   });
   document.getElementById("green").addEventListener("click", () => {
-    Editor.setRef("green");
+    Editor.setColor("green");
   });
   document.getElementById("blue").addEventListener("click", () => {
-    Editor.setRef("blue");
+    Editor.setColor("blue");
   });
   document.getElementById("rotate").addEventListener("click", () => {
     Editor.rotate();
+  });
+  document.getElementById("cube").addEventListener("click", () => {
+    Editor.setRef("cube");
+  });
+  document.getElementById("s-bar").addEventListener("click", () => {
+    Editor.setRef("s-bar");
   });
 });

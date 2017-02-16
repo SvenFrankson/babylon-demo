@@ -4,6 +4,9 @@ var Editor = (function () {
     Editor.setRef = function (ref) {
         Editor._ref = ref;
     };
+    Editor.setColor = function (col) {
+        Editor._color = col;
+    };
     Editor.rotate = function () {
         Editor._rot += 1;
         Editor._rot = Editor._rot % 4;
@@ -28,7 +31,7 @@ var Editor = (function () {
                     var gameObject = GameObject.FindByMesh(mesh);
                     if (gameObject) {
                         var newPos = Editor.GetCreatePos(gameObject.getPos(), pickResult.pickedPoint);
-                        new GameObject(newPos, Editor._rot, Editor._ref);
+                        new GameObject(newPos, Editor._rot, Editor._ref, Editor._color);
                     }
                 }
             }
@@ -72,19 +75,27 @@ var Editor = (function () {
     };
     return Editor;
 }());
+Editor._ref = "cube";
+Editor._color = "red";
 Editor._rot = 0;
 window.addEventListener("click", Editor.OnClick);
 window.addEventListener("DOMContentLoaded", function () {
     document.getElementById("red").addEventListener("click", function () {
-        Editor.setRef("red");
+        Editor.setColor("red");
     });
     document.getElementById("green").addEventListener("click", function () {
-        Editor.setRef("green");
+        Editor.setColor("green");
     });
     document.getElementById("blue").addEventListener("click", function () {
-        Editor.setRef("blue");
+        Editor.setColor("blue");
     });
     document.getElementById("rotate").addEventListener("click", function () {
         Editor.rotate();
+    });
+    document.getElementById("cube").addEventListener("click", function () {
+        Editor.setRef("cube");
+    });
+    document.getElementById("s-bar").addEventListener("click", function () {
+        Editor.setRef("s-bar");
     });
 });

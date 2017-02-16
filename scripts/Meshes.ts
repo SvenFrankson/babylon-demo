@@ -1,17 +1,13 @@
 /// <reference path="../lib/babylon.2.4.d.ts"/>
 class Meshes {
 
-  /*private static PushTriangle(vertices : Array<Array<number>>,
-                              a : number, b : number, c : number,
-                              positions : Array<number>,
-                              indices : Array<number>): void {
-    positions.push.apply(vertices[a]);
-    positions.push.apply(vertices[b]);
-    positions.push.apply(vertices[c]);
-    indices.push(a);
-    indices.push(b);
-    indices.push(c);
-  }*/
+  public static List : Array<BABYLON.VertexData> = new Array<BABYLON.VertexData>();
+
+  static Initialize(): void {
+    let dataNames : Array<string> = ["cube", "s-bar", "m-bar", "l-bar"];
+    Meshes.List[dataNames[0]] = Meshes.CubeData();
+    Meshes.List[dataNames[1]] = Meshes.SBarData();
+  }
 
   private static PushQuad(vertices : Array<Array<number>>,
                               a : number, b : number, c : number, d : number,
@@ -46,7 +42,7 @@ class Meshes {
     indices.push(index);
   }
 
-  public static CreateCube(): BABYLON.VertexData {
+  public static CubeData(): BABYLON.VertexData {
     let cubeData : BABYLON.VertexData = new BABYLON.VertexData();
 
     let vertices : Array<Array<number>> = new Array<Array<number>>();
@@ -78,7 +74,7 @@ class Meshes {
     return cubeData;
   }
 
-  public static CreateSBar(): BABYLON.VertexData {
+  public static SBarData(): BABYLON.VertexData {
     let cubeData : BABYLON.VertexData = new BABYLON.VertexData();
 
     let vertices : Array<Array<number>> = new Array<Array<number>>();
