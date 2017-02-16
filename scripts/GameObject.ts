@@ -30,6 +30,8 @@ class GameObject {
     this._mesh.outlineWidth = 0.02;
     this._mesh.outlineColor = new BABYLON.Color3(0, 0, 0);
 
+    let data : BABYLON.VertexData = Meshes.CreateSBar();
+    data.applyToMesh(this._mesh);
     let mat : BABYLON.Material = Materials.List[this._ref];
     if (mat) {
       this._mesh.material = mat;

@@ -17,6 +17,8 @@ var GameObject = (function () {
         this._mesh.renderOutline = true;
         this._mesh.outlineWidth = 0.02;
         this._mesh.outlineColor = new BABYLON.Color3(0, 0, 0);
+        var data = Meshes.CreateSBar();
+        data.applyToMesh(this._mesh);
         var mat = Materials.List[this._ref];
         if (mat) {
             this._mesh.material = mat;
