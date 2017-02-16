@@ -13,9 +13,18 @@ var GameObject = (function () {
         return this._pos;
     };
     GameObject.prototype.Initialize = function () {
+        var lockFound = this.SetLockLocal();
+        if (!lockFound) {
+            alert("Unknown Ref " + this._ref + ", can't instantiate GameObject");
+            return;
+        }
+        this.SetLockWorld();
+        if (!this.CanLock()) {
+            return;
+        }
         var data = Meshes.List[this._ref];
         if (!data) {
-            alert("Unknown Data " + this._ref + ", can't instantiate GameObject");
+            alert("Unknown Ref " + this._ref + ", can't instantiate GameObject");
             return;
         }
         var mat = Materials.List[this._col];
@@ -31,6 +40,62 @@ var GameObject = (function () {
         this._mesh.outlineColor = new BABYLON.Color3(0, 0, 0);
         data.applyToMesh(this._mesh);
         this._mesh.material = mat;
+        this.Lock();
+    };
+    GameObject.prototype.SetLockLocal = function () {
+        if (this._ref === "cube") {
+            this._lockLocal = [
+                new BABYLON.Vector3(0, 0, 0)
+            ];
+            return true;
+        }
+        if (this._ref === "s-bar") {
+            this._lockLocal = [
+                new BABYLON.Vector3(0, 0, 0),
+                new BABYLON.Vector3(0, 0, 1)
+            ];
+            return true;
+        }
+        return false;
+    };
+    GameObject.prototype.SetLockWorld = function () {
+        this._lockWorld = new Array();
+        var lockWorldVector = new Array();
+        for (var i = 0; i < this._lockLocal.length; i++) {
+            if (this._rot === 0) {
+                lockWorldVector[i] = new BABYLON.Vector3(this._lockLocal[i].x, this._lockLocal[i].y, this._lockLocal[i].z);
+            }
+            if (this._rot === 1) {
+                lockWorldVector[i] = new BABYLON.Vector3(this._lockLocal[i].z, this._lockLocal[i].y, -this._lockLocal[i].x);
+            }
+            else if (this._rot === 2) {
+                lockWorldVector[i] = new BABYLON.Vector3(-this._lockLocal[i].x, this._lockLocal[i].y, -this._lockLocal[i].z);
+            }
+            else if (this._rot === 3) {
+                lockWorldVector[i] = new BABYLON.Vector3(-this._lockLocal[i].z, this._lockLocal[i].y, this._lockLocal[i].x);
+            }
+        }
+        for (var i = 0; i < lockWorldVector.length; i++) {
+            lockWorldVector[i] = lockWorldVector[i].add(this._pos);
+            this._lockWorld.push(lockWorldVector[i].x + "_" + lockWorldVector[i].y + "_" + lockWorldVector[i].z);
+        }
+        return true;
+    };
+    GameObject.prototype.CanLock = function () {
+        for (var i = 0; i < this._lockWorld.length; i++) {
+            if (GameObject.Locks.indexOf(this._lockWorld[i]) !== -1) {
+                return false;
+            }
+        }
+        return true;
+    };
+    GameObject.prototype.Lock = function () {
+        for (var i = 0; i < this._lockWorld.length; i++) {
+            if (GameObject.Locks.indexOf(this._lockWorld[i]) !== -1) {
+                return;
+            }
+            GameObject.Locks.push(this._lockWorld[i]);
+        }
     };
     GameObject.FindByMesh = function (mesh) {
         var idString = mesh.name.slice(11);
@@ -44,3 +109,4 @@ var GameObject = (function () {
 }());
 GameObject.Id = 0;
 GameObject.Instances = new Array();
+GameObject.Locks = new Array();
