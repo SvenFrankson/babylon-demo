@@ -3,6 +3,9 @@ class Game {
 
   public static Instance: Game;
   private _canvas: HTMLCanvasElement;
+  getCanvas(): HTMLCanvasElement {
+    return this._canvas;
+  }
   private _engine: BABYLON.Engine;
   private _scene: BABYLON.Scene;
   getScene(): BABYLON.Scene {

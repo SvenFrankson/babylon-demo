@@ -10,8 +10,26 @@
     <script src="./scripts/GameObject.js"></script>
     <script src="./scripts/Editor.js"></script>
     <link rel="stylesheet" type="text/css" href="./styles/app.css">
+    <link rel="stylesheet" type="text/css" href="./styles/bootstrap.css">
 </head>
 <body>
-    <canvas id="renderCanvas"></canvas>
+  <div class="page-header text-center">
+    <h1>BabylonJS Demo</h1>
+  </div>
+  <div class="row">
+    <div class="col-xs-1">
+
+    </div>
+    <div class="col-xs-8">
+      <canvas id="renderCanvas"></canvas>
+    </div>
+    <div class="col-xs-1">
+      <div class="btn-group-vertical" role="group" aria-label="...">
+        <button id="red" type="button" class="btn btn-default">Red</button>
+        <button id="green" type="button" class="btn btn-default">Green</button>
+        <button id="blue" type="button" class="btn btn-default">Blue</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

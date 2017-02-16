@@ -1,8 +1,22 @@
 var Editor = (function () {
     function Editor() {
     }
+    Editor.setRef = function (ref) {
+        Editor._ref = ref;
+    };
     Editor.OnClick = function (evt) {
-        var pickResult = Game.Instance.getScene().pick(evt.clientX, evt.clientY);
+        Editor.GetRelativeMousePos(evt, Editor.PutMeshAtPos);
+    };
+    Editor.GetRelativeMousePos = function (evt, callback) {
+        var canvas = Game.Instance.getCanvas();
+        var x = evt.clientX;
+        var y = evt.clientY;
+        x -= canvas.getBoundingClientRect().left;
+        y -= canvas.getBoundingClientRect().top;
+        callback(x, y);
+    };
+    Editor.PutMeshAtPos = function (x, y) {
+        var pickResult = Game.Instance.getScene().pick(x, y);
         if (pickResult.hit) {
             var mesh = pickResult.pickedMesh;
             if (mesh) {
@@ -10,7 +24,7 @@ var Editor = (function () {
                     var gameObject = GameObject.FindByMesh(mesh);
                     if (gameObject) {
                         var newPos = Editor.GetCreatePos(gameObject.getPos(), pickResult.pickedPoint);
-                        new GameObject(newPos, 0, "noRef");
+                        new GameObject(newPos, 0, Editor._ref);
                     }
                 }
             }
@@ -55,3 +69,14 @@ var Editor = (function () {
     return Editor;
 }());
 window.addEventListener("click", Editor.OnClick);
+window.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("red").addEventListener("click", function () {
+        Editor.setRef("red");
+    });
+    document.getElementById("green").addEventListener("click", function () {
+        Editor.setRef("green");
+    });
+    document.getElementById("blue").addEventListener("click", function () {
+        Editor.setRef("blue");
+    });
+});

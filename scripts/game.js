@@ -4,6 +4,9 @@ var Game = (function () {
         this._canvas = document.getElementById(canvasElement);
         this._engine = new BABYLON.Engine(this._canvas, true);
     }
+    Game.prototype.getCanvas = function () {
+        return this._canvas;
+    };
     Game.prototype.getScene = function () {
         return this._scene;
     };

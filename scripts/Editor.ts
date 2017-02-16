@@ -1,8 +1,26 @@
 /// <reference path="../lib/babylon.2.4.d.ts"/>
 class Editor {
 
+  private static _ref : string;
+  public static setRef(ref : string): void {
+    Editor._ref = ref;
+  }
+
   public static OnClick(evt : MouseEvent): void {
-    var pickResult : BABYLON.PickingInfo = Game.Instance.getScene().pick(evt.clientX, evt.clientY);
+    Editor.GetRelativeMousePos(evt, Editor.PutMeshAtPos);
+  }
+
+  public static GetRelativeMousePos(evt: MouseEvent, callback : (x : number, y : number) => void): void {
+    let canvas : HTMLCanvasElement = Game.Instance.getCanvas();
+    let x : number = evt.clientX;
+    let y : number = evt.clientY;
+    x -= canvas.getBoundingClientRect().left;
+    y -= canvas.getBoundingClientRect().top;
+    callback(x, y);
+  }
+
+  public static PutMeshAtPos(x: number, y: number): void {
+    var pickResult : BABYLON.PickingInfo = Game.Instance.getScene().pick(x, y);
     // if clic hits an object.
     if (pickResult.hit) {
       let mesh : BABYLON.AbstractMesh = pickResult.pickedMesh;
@@ -14,7 +32,7 @@ class Editor {
           // if GameObject has been found.
           if (gameObject) {
             let newPos : BABYLON.Vector3 = Editor.GetCreatePos(gameObject.getPos(), pickResult.pickedPoint);
-            new GameObject(newPos, 0, "noRef");
+            new GameObject(newPos, 0, Editor._ref);
           }
         }
       }
@@ -59,3 +77,14 @@ class Editor {
 }
 
 window.addEventListener("click", Editor.OnClick);
+window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("red").addEventListener("click", () => {
+    Editor.setRef("red");
+  });
+  document.getElementById("green").addEventListener("click", () => {
+    Editor.setRef("green");
+  });
+  document.getElementById("blue").addEventListener("click", () => {
+    Editor.setRef("blue");
+  });
+});
