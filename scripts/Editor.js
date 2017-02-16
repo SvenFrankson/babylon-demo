@@ -10,7 +10,7 @@ var Editor = (function () {
                     var gameObject = GameObject.FindByMesh(mesh);
                     if (gameObject) {
                         var newPos = Editor.GetCreatePos(gameObject.getPos(), pickResult.pickedPoint);
-                        var newGameObject = new GameObject(newPos, 0, "noRef");
+                        new GameObject(newPos, 0, "noRef");
                     }
                 }
             }
@@ -24,30 +24,34 @@ var Editor = (function () {
         var Z = Math.abs(offset.z);
         if (X >= Y && X >= Z) {
             if (offset.x >= 0) {
-                offset = new BABYLON.Vector3(1, 0, 0);
+                offset = new BABYLON.Vector3(0.5, 0, 0);
             }
             else {
-                offset = new BABYLON.Vector3(-1, 0, 0);
+                offset = new BABYLON.Vector3(-0.5, 0, 0);
             }
         }
         else if (Y >= X && Y >= Z) {
             if (offset.y >= 0) {
-                offset = new BABYLON.Vector3(0, 1, 0);
+                offset = new BABYLON.Vector3(0, 0.5, 0);
             }
             else {
-                offset = new BABYLON.Vector3(0, -1, 0);
+                offset = new BABYLON.Vector3(0, -0.5, 0);
             }
         }
         else if (Z >= X && Z >= Y) {
             if (offset.z >= 0) {
-                offset = new BABYLON.Vector3(0, 0, 1);
+                offset = new BABYLON.Vector3(0, 0, 0.5);
             }
             else {
-                offset = new BABYLON.Vector3(0, 0, -1);
+                offset = new BABYLON.Vector3(0, 0, -0.5);
             }
         }
-        return targetPos.add(offset);
+        var pos = hitPos.add(offset);
+        pos.x = Math.round(pos.x);
+        pos.y = Math.round(pos.y);
+        pos.z = Math.round(pos.z);
+        return pos;
     };
     return Editor;
 }());
-window.addEventListener('click', Editor.OnClick);
+window.addEventListener("click", Editor.OnClick);

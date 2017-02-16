@@ -6,16 +6,26 @@ var GameObject = (function () {
         this._pos = pos;
         this._rot = rot;
         this._ref = ref;
-        this._mesh = BABYLON.MeshBuilder.CreateBox('GameObject_' + this._id, { size: 1 }, Game.Instance.getScene());
-        this._mesh.position = this._pos;
+        this.initialize();
     }
     GameObject.prototype.getPos = function () {
         return this._pos;
     };
+    GameObject.prototype.initialize = function () {
+        this._mesh = BABYLON.MeshBuilder.CreateBox("GameObject_" + this._id, { size: 1 }, Game.Instance.getScene());
+        this._mesh.position = this._pos;
+        this._mesh.renderOutline = true;
+        this._mesh.outlineWidth = 0.02;
+        this._mesh.outlineColor = new BABYLON.Color3(0, 0, 0);
+        var mat = Materials.List[this._ref];
+        if (mat) {
+            this._mesh.material = mat;
+        }
+    };
     GameObject.FindByMesh = function (mesh) {
         var idString = mesh.name.slice(11);
-        var id = parseInt(idString);
-        if (id != NaN) {
+        var id = parseInt(idString, 10);
+        if (id !== NaN) {
             return GameObject.Instances[id];
         }
         return null;
