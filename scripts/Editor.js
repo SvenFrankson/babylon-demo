@@ -3,13 +3,22 @@ var Editor = (function () {
     }
     Editor.setRef = function (ref) {
         Editor._ref = ref;
+        Editor._preview.Dispose();
+        Editor.setPreview();
     };
     Editor.setColor = function (col) {
         Editor._color = col;
+        Editor._preview.Dispose();
+        Editor.setPreview();
     };
     Editor.rotate = function () {
         Editor._rot += 1;
         Editor._rot = Editor._rot % 4;
+        Editor._preview.Dispose();
+        Editor.setPreview();
+    };
+    Editor.setPreview = function () {
+        Editor._preview = new GameObject(new BABYLON.Vector3(0, 0, 0), Editor._rot, Editor._ref, Editor._color, true);
     };
     Editor.OnClick = function (evt) {
         Editor.GetRelativeMousePos(evt, Editor.PutMeshAtPos);
@@ -39,7 +48,7 @@ var Editor = (function () {
     };
     ;
     Editor.GetCreatePos = function (targetPos, hitPos) {
-        var offset = hitPos.subtract(targetPos);
+        var offset = hitPos.divide(Data.XYZSize()).subtract(targetPos);
         var X = Math.abs(offset.x);
         var Y = Math.abs(offset.y);
         var Z = Math.abs(offset.z);
@@ -67,7 +76,7 @@ var Editor = (function () {
                 offset = new BABYLON.Vector3(0, 0, -0.5);
             }
         }
-        var pos = hitPos.add(offset);
+        var pos = hitPos.divide(Data.XYZSize()).add(offset);
         pos.x = Math.round(pos.x);
         pos.y = Math.round(pos.y);
         pos.z = Math.round(pos.z);
@@ -97,5 +106,8 @@ window.addEventListener("DOMContentLoaded", function () {
     });
     document.getElementById("s-bar").addEventListener("click", function () {
         Editor.setRef("s-bar");
+    });
+    document.getElementById("m-bar").addEventListener("click", function () {
+        Editor.setRef("m-bar");
     });
 });

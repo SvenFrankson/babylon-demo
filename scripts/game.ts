@@ -12,6 +12,9 @@ class Game {
     return this._scene;
   }
   private _camera: BABYLON.ArcRotateCamera;
+  getCamera(): BABYLON.ArcRotateCamera {
+    return this._camera;
+  }
   private _light: BABYLON.Light;
 
   constructor(canvasElement: string) {
@@ -45,12 +48,14 @@ class Game {
 
 window.addEventListener("DOMContentLoaded", () => {
   let game : Game = new Game("renderCanvas");
-
   game.createScene();
   game.animate();
+  let editorPreview : EditorPreview = new EditorPreview("renderCanvasEditorPreview");
+  editorPreview.createScene();
+  editorPreview.animate();
   Materials.Initialize();
   Meshes.Initialize();
-
+  Editor.setPreview();
   // debug
   new GameObject(new BABYLON.Vector3(0, 0, 0), 0, "cube", "red");
   new GameObject(new BABYLON.Vector3(1, 0, 0), 0, "s-bar", "green");

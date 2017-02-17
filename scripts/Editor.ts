@@ -4,17 +4,28 @@ class Editor {
   private static _ref : string = "cube";
   public static setRef(ref : string): void {
     Editor._ref = ref;
+    Editor._preview.Dispose();
+    Editor.setPreview();
   }
 
   private static _color : string = "red";
   public static setColor(col : string): void {
     Editor._color = col;
+    Editor._preview.Dispose();
+    Editor.setPreview();
   }
 
   private static _rot : number = 0;
   public static rotate(): void {
     Editor._rot += 1;
     Editor._rot = Editor._rot % 4;
+    Editor._preview.Dispose();
+    Editor.setPreview();
+  }
+
+  public static _preview : GameObject;
+  public static setPreview(): void {
+    Editor._preview = new GameObject(new BABYLON.Vector3(0, 0, 0), Editor._rot, Editor._ref, Editor._color, true);
   }
 
   public static OnClick(evt : MouseEvent): void {
@@ -53,7 +64,7 @@ class Editor {
   // given an object position and a clic position.
   // returns the most likely desired position for creating a new GameObject.
   private static GetCreatePos(targetPos: BABYLON.Vector3, hitPos: BABYLON.Vector3): BABYLON.Vector3 {
-    let offset : BABYLON.Vector3 = hitPos.subtract(targetPos);
+    let offset : BABYLON.Vector3 = hitPos.divide(Data.XYZSize()).subtract(targetPos);
     let X : number = Math.abs(offset.x);
     let Y : number = Math.abs(offset.y);
     let Z : number = Math.abs(offset.z);
@@ -79,7 +90,7 @@ class Editor {
       }
     }
 
-    let pos : BABYLON.Vector3 = hitPos.add(offset);
+    let pos : BABYLON.Vector3 = hitPos.divide(Data.XYZSize()).add(offset);
     pos.x = Math.round(pos.x);
     pos.y = Math.round(pos.y);
     pos.z = Math.round(pos.z);
@@ -106,5 +117,8 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   document.getElementById("s-bar").addEventListener("click", () => {
     Editor.setRef("s-bar");
+  });
+  document.getElementById("m-bar").addEventListener("click", () => {
+    Editor.setRef("m-bar");
   });
 });

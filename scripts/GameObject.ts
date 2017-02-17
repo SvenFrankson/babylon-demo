@@ -15,43 +15,59 @@ class GameObject {
   private _lockLocal : Array<BABYLON.Vector3>;
   private _lockWorld : Array<string>;
 
-  constructor(pos: BABYLON.Vector3, rot: number, ref: string, col : string) {
-    this._id = GameObject.Id;
-    GameObject.Id = GameObject.Id + 1;
-    GameObject.Instances[this._id] = this;
+  constructor(pos: BABYLON.Vector3, rot: number, ref: string, col : string, isEditor : boolean = false) {
+    if (!isEditor) {
+      this._id = GameObject.Id;
+      GameObject.Id = GameObject.Id + 1;
+      GameObject.Instances[this._id] = this;
+    } else {
+      this._id = -1;
+    }
 
     this._pos = pos;
     this._rot = rot;
     this._ref = ref;
     this._col = col;
 
-    this.Initialize();
+    this.Initialize(isEditor);
   }
 
-  private Initialize(): void {
+  private Initialize(isEditor : boolean = false): void {
     // load information concerning GameObject lock
-    let lockFound : boolean = this.SetLockLocal();
-    if (!lockFound) {
-      alert("Unknown Ref " + this._ref + ", can't instantiate GameObject");
-      return;
-    }
-    this.SetLockWorld();
-    // check if mesh will fit
-    if (!this.CanLock()) {
-      return;
+    if (!isEditor) {
+      let lockFound : boolean = this.SetLockLocal();
+      if (!lockFound) {
+        alert("Lock : Unknown Ref " + this._ref + ", can't instantiate GameObject");
+        return;
+      }
+      this.SetLockWorld();
+      // check if mesh will fit
+      if (!this.CanLock()) {
+        return;
+      }
     }
     let data : BABYLON.VertexData = Meshes.List[this._ref];
     if (!data) {
-      alert("Unknown Ref " + this._ref + ", can't instantiate GameObject");
+      alert("Data : Unknown Ref " + this._ref + ", can't instantiate GameObject");
       return;
     }
-    let mat : BABYLON.Material = Materials.List[this._col];
+    let mat : BABYLON.Material = null;
+    if (!isEditor) {
+      mat = Materials.List[this._col];
+    } else {
+      mat = Materials.ListEditor[this._col];
+    }
     if (!mat) {
       alert("Unknown Color " + this._col + ", can't instantiate GameObject");
       return;
     }
-    this._mesh = BABYLON.MeshBuilder.CreateBox("GameObject_" + this._id, {size: 1}, Game.Instance.getScene());
-    this._mesh.position = this._pos;
+    if (!isEditor) {
+      this._mesh = new BABYLON.Mesh("GameObject_" + this._id, Game.Instance.getScene());
+      this._mesh.position = this._pos.multiply(Data.XYZSize());
+    } else {
+      this._mesh = new BABYLON.Mesh("GameObject_" + this._id, EditorPreview.Instance.getScene());
+      this._mesh.position = new BABYLON.Vector3(0, 0, 0);
+    }
     this._mesh.rotation = new BABYLON.Vector3(0, Math.PI / 2 * this._rot, 0);
     this._mesh.renderOutline = true;
     this._mesh.outlineWidth = 0.02;
@@ -59,7 +75,9 @@ class GameObject {
 
     data.applyToMesh(this._mesh);
     this._mesh.material = mat;
-    this.Lock();
+    if (!isEditor) {
+      this.Lock();
+    }
   }
 
   private SetLockLocal(): boolean {
@@ -73,6 +91,15 @@ class GameObject {
       this._lockLocal = [
         new BABYLON.Vector3(0, 0, 0),
         new BABYLON.Vector3(0, 0, 1)
+      ];
+      return true;
+    }
+    if (this._ref === "m-bar") {
+      this._lockLocal = [
+        new BABYLON.Vector3(0, 0, 0),
+        new BABYLON.Vector3(0, 0, 1),
+        new BABYLON.Vector3(0, 0, 2),
+        new BABYLON.Vector3(0, 0, 3)
       ];
       return true;
     }
@@ -118,6 +145,11 @@ class GameObject {
       }
       GameObject.Locks.push(this._lockWorld[i]);
     }
+  }
+
+  public Dispose(): void {
+    this._mesh.dispose();
+    delete this;
   }
 
   public static FindByMesh(mesh: BABYLON.AbstractMesh): GameObject {

@@ -10,6 +10,9 @@ var Game = (function () {
     Game.prototype.getScene = function () {
         return this._scene;
     };
+    Game.prototype.getCamera = function () {
+        return this._camera;
+    };
     Game.prototype.createScene = function () {
         this._scene = new BABYLON.Scene(this._engine);
         this._camera = new BABYLON.ArcRotateCamera("camera", 1, 0.8, 10, new BABYLON.Vector3(0, 0, 0), this._scene);
@@ -33,8 +36,12 @@ window.addEventListener("DOMContentLoaded", function () {
     var game = new Game("renderCanvas");
     game.createScene();
     game.animate();
+    var editorPreview = new EditorPreview("renderCanvasEditorPreview");
+    editorPreview.createScene();
+    editorPreview.animate();
     Materials.Initialize();
     Meshes.Initialize();
+    Editor.setPreview();
     new GameObject(new BABYLON.Vector3(0, 0, 0), 0, "cube", "red");
     new GameObject(new BABYLON.Vector3(1, 0, 0), 0, "s-bar", "green");
     new GameObject(new BABYLON.Vector3(0, 1, 0), 0, "cube", "blue");
