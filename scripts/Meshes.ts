@@ -1,4 +1,6 @@
 /// <reference path="../lib/babylon.2.4.d.ts"/>
+// get shared VertexData from exposed arrays.
+// obviously not the easiest way to get shapes : mostly an attempt at complete procedural generation.
 class Meshes {
 
   public static List : Array<BABYLON.VertexData> = new Array<BABYLON.VertexData>();
@@ -176,6 +178,7 @@ class Meshes {
     return cubeData;
   }
 
+  // tool method to add a lego plug on top of the brick.
   private static PushSlot(x : number, y : number, z : number,
                           positions : Array<number>,
                           indices : Array<number>): void {
@@ -222,6 +225,7 @@ class Meshes {
     Meshes.PushTriangle(vertices, 15, 8, 16, positions, indices);
   }
 
+  // tool method to add a mesh triangle.
   private static PushTriangle(vertices : Array<Array<number>>,
                           a : number, b : number, c : number,
                           positions : Array<number>,
@@ -247,6 +251,7 @@ class Meshes {
     indices.push(index + 2);
   }
 
+  // tool method to add two triangles forming a mesh quad.
   private static PushQuad(vertices : Array<Array<number>>,
                           a : number, b : number, c : number, d : number,
                           positions : Array<number>,

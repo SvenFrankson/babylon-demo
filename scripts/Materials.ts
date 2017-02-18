@@ -1,4 +1,5 @@
 /// <reference path="../lib/babylon.2.4.d.ts"/>
+// get shared materials from the exposed arrays.
 class Materials {
   public static List : Array<BABYLON.Material> = new Array<BABYLON.Material>();
   public static ListEditor : Array<BABYLON.Material> = new Array<BABYLON.Material>();
