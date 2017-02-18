@@ -18,7 +18,7 @@ var Game = (function () {
         this._camera = new BABYLON.ArcRotateCamera("camera", 1, 0.8, 10, new BABYLON.Vector3(0, 0, 0), this._scene);
         this._camera.setTarget(BABYLON.Vector3.Zero());
         this._camera.attachControl(this._canvas, false);
-        this._light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0.5, 1, 0.5), this._scene);
+        this._light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), this._scene);
         this._light.diffuse = new BABYLON.Color3(1, 1, 1);
         this._light.specular = new BABYLON.Color3(1, 1, 1);
     };
@@ -44,5 +44,5 @@ window.addEventListener("DOMContentLoaded", function () {
     Meshes.Initialize();
     LocalLocks.Initialize();
     Editor.setPreview();
-    new GameObject(new BABYLON.Vector3(0, -1, 0), 0, "ground", "green", false);
+    new GameObject(new BABYLON.Vector3(0, -1, 0), 0, "ground", "Lime", false);
 });

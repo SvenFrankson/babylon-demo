@@ -16,6 +16,7 @@ var Editor = (function () {
         Editor._rot = Editor._rot % 4;
         Editor._preview.Dispose();
         Editor.setPreview();
+        Editor._cursor.Dispose();
     };
     Editor.setPreview = function () {
         Editor._preview = new GameObject(new BABYLON.Vector3(0, 0, 0), Editor._rot, Editor._ref, Editor._color, true, true);
@@ -29,6 +30,11 @@ var Editor = (function () {
     Editor.disposeCursor = function () {
         if (Editor._cursor) {
             Editor._cursor.Dispose();
+        }
+    };
+    Editor.OnKeyDown = function (evt) {
+        if (evt.code === "KeyR") {
+            Editor.rotate();
         }
     };
     Editor.OnClick = function (evt) {
@@ -118,24 +124,24 @@ var Editor = (function () {
     return Editor;
 }());
 Editor._ref = "cube";
-Editor._color = "red";
+Editor._color = "Red";
 Editor._rot = 0;
 Editor._cursorPos = new BABYLON.Vector3(0, 0, 0);
 window.addEventListener("DOMContentLoaded", function () {
+    window.addEventListener("keydown", Editor.OnKeyDown);
     document.getElementById("renderCanvas").addEventListener("click", Editor.OnClick);
     document.getElementById("renderCanvas").addEventListener("mousemove", Editor.OnMouseOver);
-    document.getElementById("red").addEventListener("click", function () {
-        Editor.setColor("red");
-    });
-    document.getElementById("green").addEventListener("click", function () {
-        Editor.setColor("green");
-    });
-    document.getElementById("blue").addEventListener("click", function () {
-        Editor.setColor("blue");
-    });
-    document.getElementById("yellow").addEventListener("click", function () {
-        Editor.setColor("yellow");
-    });
+    var colors = document.getElementsByClassName("colorpicker");
+    var _loop_1 = function (i) {
+        var htmlColor = colors[i];
+        htmlColor.style.backgroundColor = htmlColor.id;
+        htmlColor.addEventListener("click", function () {
+            Editor.setColor(htmlColor.id);
+        });
+    };
+    for (var i = 0; i < colors.length; i++) {
+        _loop_1(i);
+    }
     document.getElementById("rotate").addEventListener("click", function () {
         Editor.rotate();
     });

@@ -9,7 +9,7 @@ class Editor {
     Editor.setPreview();
   }
 
-  private static _color : string = "red";
+  private static _color : string = "Red";
   public static setColor(col : string): void {
     Editor._color = col;
     Editor._preview.Dispose();
@@ -22,6 +22,7 @@ class Editor {
     Editor._rot = Editor._rot % 4;
     Editor._preview.Dispose();
     Editor.setPreview();
+    Editor._cursor.Dispose();
   }
 
   // instance of GameObject showing the current properties values (shown in the EditorPreview canvas)
@@ -42,6 +43,12 @@ class Editor {
   public static disposeCursor(): void {
     if (Editor._cursor) {
       Editor._cursor.Dispose();
+    }
+  }
+
+  public static OnKeyDown(evt : KeyboardEvent): void {
+    if (evt.code === "KeyR") {
+      Editor.rotate();
     }
   }
 
@@ -154,20 +161,18 @@ class Editor {
 
 // add interface listeners to take input from DOM.
 window.addEventListener("DOMContentLoaded", () => {
+  window.addEventListener("keydown", Editor.OnKeyDown);
   document.getElementById("renderCanvas").addEventListener("click", Editor.OnClick);
   document.getElementById("renderCanvas").addEventListener("mousemove", Editor.OnMouseOver);
-  document.getElementById("red").addEventListener("click", () => {
-    Editor.setColor("red");
-  });
-  document.getElementById("green").addEventListener("click", () => {
-    Editor.setColor("green");
-  });
-  document.getElementById("blue").addEventListener("click", () => {
-    Editor.setColor("blue");
-  });
-  document.getElementById("yellow").addEventListener("click", () => {
-    Editor.setColor("yellow");
-  });
+
+  let colors : HTMLCollectionOf<Element> = document.getElementsByClassName("colorpicker");
+  for (let i : number = 0; i < colors.length; i++) {
+    let htmlColor : HTMLElement = colors[i] as HTMLElement;
+    htmlColor.style.backgroundColor = htmlColor.id;
+    htmlColor.addEventListener("click", () => {
+      Editor.setColor(htmlColor.id);
+    });
+  }
   document.getElementById("rotate").addEventListener("click", () => {
     Editor.rotate();
   });
