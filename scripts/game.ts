@@ -56,5 +56,5 @@ window.addEventListener("DOMContentLoaded", () => {
   LocalLocks.Initialize();
   Editor.setPreview();
 
-  new GameObject(new BABYLON.Vector3(0, -1, 0), 0, "ground", "green");
+  new GameObject(new BABYLON.Vector3(0, -1, 0), 0, "ground", "green", false);
 });

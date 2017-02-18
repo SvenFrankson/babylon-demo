@@ -2,6 +2,7 @@
 class GameObject {
   private static Id: number = 0;
   private static Instances: Array<GameObject> = new Array<GameObject>();
+  // list all locks taken by activate gameobjects.
   private static Locks: Array<string> = new Array<string>();
   private _id: number;
   private _pos: BABYLON.Vector3;
@@ -105,6 +106,8 @@ class GameObject {
     return true;
   }
 
+  // check if all locks can be taken.
+  // having all locks free means the GameObject has enough space to be put in the scene.
   private CanLock(): boolean {
     for (let i : number = 0; i < this._lockWorld.length; i++) {
       if (GameObject.Locks.indexOf(this._lockWorld[i]) !== -1) {
@@ -114,17 +117,36 @@ class GameObject {
     return true;
   }
 
-  private Lock(): void {
+  // take all locks for the gameObject.
+  // call CanLock() before to check if all locks are free to be taken.
+  // returns false if a lock had already been taken.
+  private Lock(): boolean {
+    let ok : boolean = true;
     for (let i : number = 0; i < this._lockWorld.length; i++) {
-      if (GameObject.Locks.indexOf(this._lockWorld[i]) !== -1) {
-        return;
+      if (GameObject.Locks.indexOf(this._lockWorld[i]) === -1) {
+        GameObject.Locks.push(this._lockWorld[i]);
+      } else {
+        ok = false;
       }
-      GameObject.Locks.push(this._lockWorld[i]);
+    }
+    return ok;
+  }
+
+  // release all locks for the gameObject.
+  private Unlock(): void {
+    if (this._lockWorld) {
+      for (let i : number = 0; i < this._lockWorld.length; i++) {
+        let index : number = GameObject.Locks.indexOf(this._lockWorld[i]);
+        if (index !== -1) {
+          GameObject.Locks.splice(index, 1);
+        }
+      }
     }
   }
 
   public Dispose(): void {
     if (this._disposable) {
+      this.Unlock();
       this._mesh.dispose();
       delete this;
     }

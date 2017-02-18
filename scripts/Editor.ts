@@ -32,7 +32,11 @@ class Editor {
 
   public static OnClick(evt : MouseEvent): void {
     let coordinates : {x : number, y : number} = Editor.GetRelativeMousePos(evt);
-    Editor.CreateGameObjectAtPos(coordinates);
+    if (Editor._ref !== "delete") {
+      Editor.CreateGameObjectAtPos(coordinates);
+    } else {
+      Editor.DisposeGameObjectAtPos(coordinates);
+    }
   }
 
   // if not in full screen, mouse position has to be offseted to reflect useful canvas coordinates.
@@ -58,9 +62,26 @@ class Editor {
           let gameObject : GameObject = GameObject.FindByMesh(mesh);
           // if GameObject has been found.
           if (gameObject) {
-            let newPos : BABYLON.Vector3 = Editor.GetCreatePos(pickResult.pickedPoint);
+            let newPos : BABYLON.Vector3 = Editor.GetCoordinates(pickResult.pickedPoint);
             new GameObject(newPos, Editor._rot, Editor._ref, Editor._color);
           }
+        }
+      }
+    }
+  };
+
+  // do all checks and dispose picked GameObject
+  public static DisposeGameObjectAtPos(coordinates : {x : number, y : number}): void {
+    var pickResult : BABYLON.PickingInfo = Game.Instance.getScene().pick(coordinates.x, coordinates.y);
+    // if clic hits an object.
+    if (pickResult.hit) {
+      let mesh : BABYLON.AbstractMesh = pickResult.pickedMesh;
+      // if clic hits a mesh.
+      if (mesh) {
+        // if Mesh is a GameObject.
+        if (mesh.name.indexOf("GameObject_") === 0) {
+          let gameObject : GameObject = GameObject.FindByMesh(mesh);
+          gameObject.Dispose();
         }
       }
     }
@@ -69,11 +90,12 @@ class Editor {
   // given a clic position.
   // returns the most likely desired position for creating a new GameObject.
   // note : as no mesh normal is available easily, might send slightly unexpected result when hit is close to element edges.
-  private static GetCreatePos(hitPos: BABYLON.Vector3): BABYLON.Vector3 {
+  private static GetCoordinates(hitPos: BABYLON.Vector3): BABYLON.Vector3 {
     hitPos = hitPos.divide(Data.XYZSize());
     let epsilon : BABYLON.Vector3 = BABYLON.Vector3.Normalize(hitPos.subtract(Game.Instance.getCamera().position));
     epsilon = epsilon.multiplyByFloats(0.1, 0.1, 0.1);
-    let pos : BABYLON.Vector3 = hitPos.subtract(epsilon);
+    let pos : BABYLON.Vector3 = hitPos;
+    pos = hitPos.subtract(epsilon);
     pos.x = Math.round(pos.x);
     pos.y = Math.round(pos.y);
     pos.z = Math.round(pos.z);
@@ -100,6 +122,9 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("rotate").addEventListener("click", () => {
     Editor.rotate();
   });
+  document.getElementById("delete").addEventListener("click", () => {
+    Editor.setRef("delete");
+  });
   document.getElementById("cube").addEventListener("click", () => {
     Editor.setRef("cube");
   });
@@ -108,5 +133,8 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   document.getElementById("m-bar").addEventListener("click", () => {
     Editor.setRef("m-bar");
+  });
+  document.getElementById("l-bar").addEventListener("click", () => {
+    Editor.setRef("l-bar");
   });
 });

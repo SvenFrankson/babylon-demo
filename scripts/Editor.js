@@ -22,7 +22,12 @@ var Editor = (function () {
     };
     Editor.OnClick = function (evt) {
         var coordinates = Editor.GetRelativeMousePos(evt);
-        Editor.CreateGameObjectAtPos(coordinates);
+        if (Editor._ref !== "delete") {
+            Editor.CreateGameObjectAtPos(coordinates);
+        }
+        else {
+            Editor.DisposeGameObjectAtPos(coordinates);
+        }
     };
     Editor.GetRelativeMousePos = function (evt) {
         var canvas = Game.Instance.getCanvas();
@@ -40,7 +45,7 @@ var Editor = (function () {
                 if (mesh.name.indexOf("GameObject_") === 0) {
                     var gameObject = GameObject.FindByMesh(mesh);
                     if (gameObject) {
-                        var newPos = Editor.GetCreatePos(pickResult.pickedPoint);
+                        var newPos = Editor.GetCoordinates(pickResult.pickedPoint);
                         new GameObject(newPos, Editor._rot, Editor._ref, Editor._color);
                     }
                 }
@@ -48,11 +53,25 @@ var Editor = (function () {
         }
     };
     ;
-    Editor.GetCreatePos = function (hitPos) {
+    Editor.DisposeGameObjectAtPos = function (coordinates) {
+        var pickResult = Game.Instance.getScene().pick(coordinates.x, coordinates.y);
+        if (pickResult.hit) {
+            var mesh = pickResult.pickedMesh;
+            if (mesh) {
+                if (mesh.name.indexOf("GameObject_") === 0) {
+                    var gameObject = GameObject.FindByMesh(mesh);
+                    gameObject.Dispose();
+                }
+            }
+        }
+    };
+    ;
+    Editor.GetCoordinates = function (hitPos) {
         hitPos = hitPos.divide(Data.XYZSize());
         var epsilon = BABYLON.Vector3.Normalize(hitPos.subtract(Game.Instance.getCamera().position));
         epsilon = epsilon.multiplyByFloats(0.1, 0.1, 0.1);
-        var pos = hitPos.subtract(epsilon);
+        var pos = hitPos;
+        pos = hitPos.subtract(epsilon);
         pos.x = Math.round(pos.x);
         pos.y = Math.round(pos.y);
         pos.z = Math.round(pos.z);
@@ -80,6 +99,9 @@ window.addEventListener("DOMContentLoaded", function () {
     document.getElementById("rotate").addEventListener("click", function () {
         Editor.rotate();
     });
+    document.getElementById("delete").addEventListener("click", function () {
+        Editor.setRef("delete");
+    });
     document.getElementById("cube").addEventListener("click", function () {
         Editor.setRef("cube");
     });
@@ -88,5 +110,8 @@ window.addEventListener("DOMContentLoaded", function () {
     });
     document.getElementById("m-bar").addEventListener("click", function () {
         Editor.setRef("m-bar");
+    });
+    document.getElementById("l-bar").addEventListener("click", function () {
+        Editor.setRef("l-bar");
     });
 });

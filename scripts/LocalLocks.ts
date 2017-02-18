@@ -30,6 +30,17 @@ class LocalLocks {
         new BABYLON.Vector3(0, 0, 2),
         new BABYLON.Vector3(0, 0, 3)
       ];
+    } else if (ref === "l-bar") {
+      lockLocal = [
+        new BABYLON.Vector3(0, 0, 0),
+        new BABYLON.Vector3(0, 0, 1),
+        new BABYLON.Vector3(0, 0, 2),
+        new BABYLON.Vector3(0, 0, 3),
+        new BABYLON.Vector3(0, 0, 4),
+        new BABYLON.Vector3(0, 0, 5),
+        new BABYLON.Vector3(0, 0, 6),
+        new BABYLON.Vector3(0, 0, 7)
+      ];
     } else if (ref === "ground") {
       lockLocal = [];
       for (let i : number = 10; i <= 10; i++) {

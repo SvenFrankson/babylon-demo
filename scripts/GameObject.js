@@ -98,15 +98,30 @@ var GameObject = (function () {
         return true;
     };
     GameObject.prototype.Lock = function () {
+        var ok = true;
         for (var i = 0; i < this._lockWorld.length; i++) {
-            if (GameObject.Locks.indexOf(this._lockWorld[i]) !== -1) {
-                return;
+            if (GameObject.Locks.indexOf(this._lockWorld[i]) === -1) {
+                GameObject.Locks.push(this._lockWorld[i]);
             }
-            GameObject.Locks.push(this._lockWorld[i]);
+            else {
+                ok = false;
+            }
+        }
+        return ok;
+    };
+    GameObject.prototype.Unlock = function () {
+        if (this._lockWorld) {
+            for (var i = 0; i < this._lockWorld.length; i++) {
+                var index = GameObject.Locks.indexOf(this._lockWorld[i]);
+                if (index !== -1) {
+                    GameObject.Locks.splice(index, 1);
+                }
+            }
         }
     };
     GameObject.prototype.Dispose = function () {
         if (this._disposable) {
+            this.Unlock();
             this._mesh.dispose();
             delete this;
         }
