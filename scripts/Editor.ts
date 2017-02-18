@@ -54,11 +54,13 @@ class Editor {
 
   public static OnClick(evt : MouseEvent): void {
     Editor.disposeCursor();
-    let coordinates : {x : number, y : number} = Editor.GetRelativeMousePos(evt);
-    if (Editor._ref !== "delete") {
-      Editor.CreateGameObjectAtPos(coordinates);
-    } else {
-      Editor.DisposeGameObjectAtPos(coordinates);
+    if (evt.button === 0) {
+      let coordinates : {x : number, y : number} = Editor.GetRelativeMousePos(evt);
+      if (Editor._ref !== "delete") {
+        Editor.CreateGameObjectAtPos(coordinates);
+      } else {
+        Editor.DisposeGameObjectAtPos(coordinates);
+      }
     }
   }
 

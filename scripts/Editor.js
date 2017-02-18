@@ -39,12 +39,14 @@ var Editor = (function () {
     };
     Editor.OnClick = function (evt) {
         Editor.disposeCursor();
-        var coordinates = Editor.GetRelativeMousePos(evt);
-        if (Editor._ref !== "delete") {
-            Editor.CreateGameObjectAtPos(coordinates);
-        }
-        else {
-            Editor.DisposeGameObjectAtPos(coordinates);
+        if (evt.button === 0) {
+            var coordinates = Editor.GetRelativeMousePos(evt);
+            if (Editor._ref !== "delete") {
+                Editor.CreateGameObjectAtPos(coordinates);
+            }
+            else {
+                Editor.DisposeGameObjectAtPos(coordinates);
+            }
         }
     };
     Editor.GetRelativeMousePos = function (evt) {
