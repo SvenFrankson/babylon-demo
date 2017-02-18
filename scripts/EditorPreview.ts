@@ -1,6 +1,8 @@
 /// <reference path="../lib/babylon.2.4.d.ts"/>
+// instance of BABYLON Engine providing preview for the editor's current settings.
+// running another instance of BABYLON Engine instead of using embedded UI might cost some CPU
+// benefit is avoiding dealing with multiple cameras in one-scene.
 class EditorPreview {
-
   public static Instance: EditorPreview;
   private _canvas: HTMLCanvasElement;
   getCanvas(): HTMLCanvasElement {
@@ -33,6 +35,7 @@ class EditorPreview {
   animate(): void {
     this._engine.runRenderLoop(() => {
       this._scene.render();
+      // sync camera position with the one from the main scene helps vizualize
       this._camera.alpha = Game.Instance.getCamera().alpha;
       this._camera.beta = Game.Instance.getCamera().beta;
     });

@@ -54,6 +54,6 @@ window.addEventListener("DOMContentLoaded", () => {
   Materials.Initialize();
   Meshes.Initialize();
   Editor.setPreview();
-  // debug
+
   new GameObject(new BABYLON.Vector3(0, -1, 0), 0, "ground", "green");
 });

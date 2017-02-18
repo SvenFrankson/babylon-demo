@@ -22,7 +22,7 @@ var Editor = (function () {
     };
     Editor.OnClick = function (evt) {
         var coordinates = Editor.GetRelativeMousePos(evt);
-        Editor.PutMeshAtPos(coordinates);
+        Editor.CreateGameObjectAtPos(coordinates);
     };
     Editor.GetRelativeMousePos = function (evt) {
         var canvas = Game.Instance.getCanvas();
@@ -32,7 +32,7 @@ var Editor = (function () {
         };
         return coordinates;
     };
-    Editor.PutMeshAtPos = function (coordinates) {
+    Editor.CreateGameObjectAtPos = function (coordinates) {
         var pickResult = Game.Instance.getScene().pick(coordinates.x, coordinates.y);
         if (pickResult.hit) {
             var mesh = pickResult.pickedMesh;

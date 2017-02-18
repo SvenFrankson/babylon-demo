@@ -1,4 +1,5 @@
 /// <reference path="../lib/babylon.2.4.d.ts"/>
+// deals with adding/removing elements according to user's inputs.
 class Editor {
 
   private static _ref : string = "cube";
@@ -23,6 +24,7 @@ class Editor {
     Editor.setPreview();
   }
 
+  // instance of GameObject showing the current properties values (shown in the EditorPreview canvas)
   public static _preview : GameObject;
   public static setPreview(): void {
     Editor._preview = new GameObject(new BABYLON.Vector3(0, 0, 0), Editor._rot, Editor._ref, Editor._color, true, true);
@@ -30,9 +32,10 @@ class Editor {
 
   public static OnClick(evt : MouseEvent): void {
     let coordinates : {x : number, y : number} = Editor.GetRelativeMousePos(evt);
-    Editor.PutMeshAtPos(coordinates);
+    Editor.CreateGameObjectAtPos(coordinates);
   }
 
+  // if not in full screen, mouse position has to be offseted to reflect useful canvas coordinates.
   public static GetRelativeMousePos(evt: MouseEvent): {x : number, y : number} {
     let canvas : HTMLCanvasElement = Game.Instance.getCanvas();
     let coordinates : {x : number, y : number} = {
@@ -42,7 +45,8 @@ class Editor {
     return coordinates;
   }
 
-  public static PutMeshAtPos(coordinates : {x : number, y : number}): void {
+  // do all checks before instantiating a GameObject
+  public static CreateGameObjectAtPos(coordinates : {x : number, y : number}): void {
     var pickResult : BABYLON.PickingInfo = Game.Instance.getScene().pick(coordinates.x, coordinates.y);
     // if clic hits an object.
     if (pickResult.hit) {
@@ -64,6 +68,7 @@ class Editor {
 
   // given a clic position.
   // returns the most likely desired position for creating a new GameObject.
+  // note : as no mesh normal is available easily, might send slightly unexpected result when hit is close to element edges.
   private static GetCreatePos(hitPos: BABYLON.Vector3): BABYLON.Vector3 {
     hitPos = hitPos.divide(Data.XYZSize());
     let epsilon : BABYLON.Vector3 = BABYLON.Vector3.Normalize(hitPos.subtract(Game.Instance.getCamera().position));
@@ -77,6 +82,7 @@ class Editor {
   }
 }
 
+// add interface listeners to take input from DOM.
 window.addEventListener("click", Editor.OnClick);
 window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("red").addEventListener("click", () => {
