@@ -30,7 +30,9 @@ class Game {
     this._camera.setTarget(BABYLON.Vector3.Zero());
     this._camera.attachControl(this._canvas, false);
 
-    this._light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), this._scene);
+    this._light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0.5, 1, 0.5), this._scene);
+    this._light.diffuse = new BABYLON.Color3(1, 1, 1);
+    this._light.specular = new BABYLON.Color3(1, 1, 1);
   }
 
   animate(): void {

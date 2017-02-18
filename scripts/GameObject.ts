@@ -81,6 +81,28 @@ class GameObject {
     if (!isEditor) {
       this.Lock();
     }
+
+    // run animation
+    let anim : BABYLON.Animation = new BABYLON.Animation(
+      "popup",
+      "scaling",
+      60,
+      BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+    );
+
+    let keys : Array<{frame : number, value : BABYLON.Vector3}> = new Array<{frame : number, value : BABYLON.Vector3}>();
+    keys.push({
+      frame: 0,
+      value: new BABYLON.Vector3(0.1, 0.1, 0.1)
+    });
+    keys.push({
+      frame: 10,
+      value: new BABYLON.Vector3(1, 1, 1)
+    });
+    anim.setKeys(keys);
+    this._mesh.animations.push(anim);
+    Game.Instance.getScene().beginAnimation(this._mesh, 0, 10, true);
   }
 
   private SetLockWorld(): boolean {

@@ -65,6 +65,19 @@ var GameObject = (function () {
         if (!isEditor) {
             this.Lock();
         }
+        var anim = new BABYLON.Animation("popup", "scaling", 60, BABYLON.Animation.ANIMATIONTYPE_VECTOR3, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+        var keys = new Array();
+        keys.push({
+            frame: 0,
+            value: new BABYLON.Vector3(0.1, 0.1, 0.1)
+        });
+        keys.push({
+            frame: 10,
+            value: new BABYLON.Vector3(1, 1, 1)
+        });
+        anim.setKeys(keys);
+        this._mesh.animations.push(anim);
+        Game.Instance.getScene().beginAnimation(this._mesh, 0, 10, true);
     };
     GameObject.prototype.SetLockWorld = function () {
         this._lockWorld = new Array();
