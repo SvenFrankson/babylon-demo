@@ -114,4 +114,13 @@ window.addEventListener("DOMContentLoaded", function () {
     document.getElementById("l-bar").addEventListener("click", function () {
         Editor.setRef("l-bar");
     });
+    document.getElementById("s-brick").addEventListener("click", function () {
+        Editor.setRef("s-brick");
+    });
+    document.getElementById("m-brick").addEventListener("click", function () {
+        Editor.setRef("m-brick");
+    });
+    document.getElementById("l-brick").addEventListener("click", function () {
+        Editor.setRef("l-brick");
+    });
 });

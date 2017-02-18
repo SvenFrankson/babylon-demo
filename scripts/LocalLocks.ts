@@ -6,7 +6,7 @@ class LocalLocks {
   public static List : Array<Array<BABYLON.Vector3>> = new Array<Array<BABYLON.Vector3>>();
 
   static Initialize(): void {
-    let dataNames : Array<string> = ["cube", "s-bar", "m-bar", "l-bar", "ground"];
+    let dataNames : Array<string> = ["cube", "s-bar", "m-bar", "l-bar", "ground", "delete", "s-brick", "m-brick", "l-brick"];
     for (let i : number = 0; i < dataNames.length; i++) {
       LocalLocks.List[dataNames[i]] = LocalLocks.GetLocalLock(dataNames[i]);
     }
@@ -45,6 +45,29 @@ class LocalLocks {
       lockLocal = [];
       for (let i : number = 10; i <= 10; i++) {
         for (let k : number = 10; k <= 10; k++) {
+          lockLocal.push(new BABYLON.Vector3(i, 0, k));
+        }
+      }
+    } else if (ref === "delete") {
+      lockLocal = [];
+    } else if (ref === "s-brick") {
+      lockLocal = [];
+      for (let i : number = 0; i <= 1; i++) {
+        for (let k : number = 0; k <= 1; k++) {
+          lockLocal.push(new BABYLON.Vector3(i, 0, k));
+        }
+      }
+    } else if (ref === "m-brick") {
+      lockLocal = [];
+      for (let i : number = 0; i <= 1; i++) {
+        for (let k : number = 0; k <= 3; k++) {
+          lockLocal.push(new BABYLON.Vector3(i, 0, k));
+        }
+      }
+    }else if (ref === "l-brick") {
+      lockLocal = [];
+      for (let i : number = 0; i <= 1; i++) {
+        for (let k : number = 0; k <= 7; k++) {
           lockLocal.push(new BABYLON.Vector3(i, 0, k));
         }
       }
