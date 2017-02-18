@@ -1,5 +1,6 @@
 var GameObject = (function () {
-    function GameObject(pos, rot, ref, col, isEditor) {
+    function GameObject(pos, rot, ref, col, disposable, isEditor) {
+        if (disposable === void 0) { disposable = true; }
         if (isEditor === void 0) { isEditor = false; }
         if (!isEditor) {
             this._id = GameObject.Id;
@@ -13,13 +14,13 @@ var GameObject = (function () {
         this._rot = rot;
         this._ref = ref;
         this._col = col;
-        this.Initialize(isEditor);
+        this._disposable = disposable;
+        this.Initialize(disposable, isEditor);
     }
     GameObject.prototype.getPos = function () {
         return this._pos;
     };
-    GameObject.prototype.Initialize = function (isEditor) {
-        if (isEditor === void 0) { isEditor = false; }
+    GameObject.prototype.Initialize = function (disposable, isEditor) {
         if (!isEditor) {
             var lockFound = this.SetLockLocal();
             if (!lockFound) {
@@ -88,6 +89,15 @@ var GameObject = (function () {
             ];
             return true;
         }
+        if (this._ref === "ground") {
+            this._lockLocal = [];
+            for (var i = 10; i <= 10; i++) {
+                for (var k = 10; k <= 10; k++) {
+                    this._lockLocal.push(new BABYLON.Vector3(i, 0, k));
+                }
+            }
+            return true;
+        }
         return false;
     };
     GameObject.prototype.SetLockWorld = function () {
@@ -130,8 +140,10 @@ var GameObject = (function () {
         }
     };
     GameObject.prototype.Dispose = function () {
-        this._mesh.dispose();
-        delete this;
+        if (this._disposable) {
+            this._mesh.dispose();
+            delete this;
+        }
     };
     GameObject.FindByMesh = function (mesh) {
         var idString = mesh.name.slice(11);
