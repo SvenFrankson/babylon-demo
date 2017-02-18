@@ -37,8 +37,8 @@ class GameObject {
   private Initialize(disposable : boolean, isEditor : boolean): void {
     // load information concerning GameObject lock
     if (!isEditor) {
-      let lockFound : boolean = this.SetLockLocal();
-      if (!lockFound) {
+      this._lockLocal = LocalLocks.GetLocalLock(this._ref);
+      if (!this._lockLocal) {
         alert("Lock : Unknown Ref " + this._ref + ", can't instantiate GameObject");
         return;
       }
@@ -80,41 +80,6 @@ class GameObject {
     if (!isEditor) {
       this.Lock();
     }
-  }
-
-  private SetLockLocal(): boolean {
-    if (this._ref === "cube") {
-      this._lockLocal = [
-        new BABYLON.Vector3(0, 0, 0)
-      ];
-      return true;
-    }
-    if (this._ref === "s-bar") {
-      this._lockLocal = [
-        new BABYLON.Vector3(0, 0, 0),
-        new BABYLON.Vector3(0, 0, 1)
-      ];
-      return true;
-    }
-    if (this._ref === "m-bar") {
-      this._lockLocal = [
-        new BABYLON.Vector3(0, 0, 0),
-        new BABYLON.Vector3(0, 0, 1),
-        new BABYLON.Vector3(0, 0, 2),
-        new BABYLON.Vector3(0, 0, 3)
-      ];
-      return true;
-    }
-    if (this._ref === "ground") {
-      this._lockLocal = [];
-      for (let i : number = 10; i <= 10; i++) {
-        for (let k : number = 10; k <= 10; k++) {
-          this._lockLocal.push(new BABYLON.Vector3(i, 0, k));
-        }
-      }
-      return true;
-    }
-    return false;
   }
 
   private SetLockWorld(): boolean {

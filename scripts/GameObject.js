@@ -22,8 +22,8 @@ var GameObject = (function () {
     };
     GameObject.prototype.Initialize = function (disposable, isEditor) {
         if (!isEditor) {
-            var lockFound = this.SetLockLocal();
-            if (!lockFound) {
+            this._lockLocal = LocalLocks.GetLocalLock(this._ref);
+            if (!this._lockLocal) {
                 alert("Lock : Unknown Ref " + this._ref + ", can't instantiate GameObject");
                 return;
             }
@@ -65,40 +65,6 @@ var GameObject = (function () {
         if (!isEditor) {
             this.Lock();
         }
-    };
-    GameObject.prototype.SetLockLocal = function () {
-        if (this._ref === "cube") {
-            this._lockLocal = [
-                new BABYLON.Vector3(0, 0, 0)
-            ];
-            return true;
-        }
-        if (this._ref === "s-bar") {
-            this._lockLocal = [
-                new BABYLON.Vector3(0, 0, 0),
-                new BABYLON.Vector3(0, 0, 1)
-            ];
-            return true;
-        }
-        if (this._ref === "m-bar") {
-            this._lockLocal = [
-                new BABYLON.Vector3(0, 0, 0),
-                new BABYLON.Vector3(0, 0, 1),
-                new BABYLON.Vector3(0, 0, 2),
-                new BABYLON.Vector3(0, 0, 3)
-            ];
-            return true;
-        }
-        if (this._ref === "ground") {
-            this._lockLocal = [];
-            for (var i = 10; i <= 10; i++) {
-                for (var k = 10; k <= 10; k++) {
-                    this._lockLocal.push(new BABYLON.Vector3(i, 0, k));
-                }
-            }
-            return true;
-        }
-        return false;
     };
     GameObject.prototype.SetLockWorld = function () {
         this._lockWorld = new Array();
