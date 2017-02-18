@@ -14,8 +14,9 @@ class GameObject {
   private _mesh: BABYLON.Mesh;
   private _lockLocal : Array<BABYLON.Vector3>;
   private _lockWorld : Array<string>;
+  private _disposable : boolean;
 
-  constructor(pos: BABYLON.Vector3, rot: number, ref: string, col : string, isEditor : boolean = false) {
+  constructor(pos: BABYLON.Vector3, rot: number, ref: string, col : string, disposable : boolean = true, isEditor : boolean = false) {
     if (!isEditor) {
       this._id = GameObject.Id;
       GameObject.Id = GameObject.Id + 1;
@@ -28,11 +29,12 @@ class GameObject {
     this._rot = rot;
     this._ref = ref;
     this._col = col;
+    this._disposable = disposable;
 
-    this.Initialize(isEditor);
+    this.Initialize(disposable, isEditor);
   }
 
-  private Initialize(isEditor : boolean = false): void {
+  private Initialize(disposable : boolean, isEditor : boolean): void {
     // load information concerning GameObject lock
     if (!isEditor) {
       let lockFound : boolean = this.SetLockLocal();
@@ -103,6 +105,15 @@ class GameObject {
       ];
       return true;
     }
+    if (this._ref === "ground") {
+      this._lockLocal = [];
+      for (let i : number = 10; i <= 10; i++) {
+        for (let k : number = 10; k <= 10; k++) {
+          this._lockLocal.push(new BABYLON.Vector3(i, 0, k));
+        }
+      }
+      return true;
+    }
     return false;
   }
 
@@ -148,8 +159,10 @@ class GameObject {
   }
 
   public Dispose(): void {
-    this._mesh.dispose();
-    delete this;
+    if (this._disposable) {
+      this._mesh.dispose();
+      delete this;
+    }
   }
 
   public static FindByMesh(mesh: BABYLON.AbstractMesh): GameObject {

@@ -18,28 +18,29 @@ var Editor = (function () {
         Editor.setPreview();
     };
     Editor.setPreview = function () {
-        Editor._preview = new GameObject(new BABYLON.Vector3(0, 0, 0), Editor._rot, Editor._ref, Editor._color, true);
+        Editor._preview = new GameObject(new BABYLON.Vector3(0, 0, 0), Editor._rot, Editor._ref, Editor._color, true, true);
     };
     Editor.OnClick = function (evt) {
-        Editor.GetRelativeMousePos(evt, Editor.PutMeshAtPos);
+        var coordinates = Editor.GetRelativeMousePos(evt);
+        Editor.PutMeshAtPos(coordinates);
     };
-    Editor.GetRelativeMousePos = function (evt, callback) {
+    Editor.GetRelativeMousePos = function (evt) {
         var canvas = Game.Instance.getCanvas();
-        var x = evt.clientX;
-        var y = evt.clientY;
-        x -= canvas.getBoundingClientRect().left;
-        y -= canvas.getBoundingClientRect().top;
-        callback(x, y);
+        var coordinates = {
+            x: evt.clientX - canvas.getBoundingClientRect().left,
+            y: evt.clientY - canvas.getBoundingClientRect().top
+        };
+        return coordinates;
     };
-    Editor.PutMeshAtPos = function (x, y) {
-        var pickResult = Game.Instance.getScene().pick(x, y);
+    Editor.PutMeshAtPos = function (coordinates) {
+        var pickResult = Game.Instance.getScene().pick(coordinates.x, coordinates.y);
         if (pickResult.hit) {
             var mesh = pickResult.pickedMesh;
             if (mesh) {
                 if (mesh.name.indexOf("GameObject_") === 0) {
                     var gameObject = GameObject.FindByMesh(mesh);
                     if (gameObject) {
-                        var newPos = Editor.GetCreatePos(gameObject.getPos(), pickResult.pickedPoint);
+                        var newPos = Editor.GetCreatePos(pickResult.pickedPoint);
                         new GameObject(newPos, Editor._rot, Editor._ref, Editor._color);
                     }
                 }
@@ -47,36 +48,11 @@ var Editor = (function () {
         }
     };
     ;
-    Editor.GetCreatePos = function (targetPos, hitPos) {
-        var offset = hitPos.divide(Data.XYZSize()).subtract(targetPos);
-        var X = Math.abs(offset.x);
-        var Y = Math.abs(offset.y);
-        var Z = Math.abs(offset.z);
-        if (X >= Y && X >= Z) {
-            if (offset.x >= 0) {
-                offset = new BABYLON.Vector3(0.5, 0, 0);
-            }
-            else {
-                offset = new BABYLON.Vector3(-0.5, 0, 0);
-            }
-        }
-        else if (Y >= X && Y >= Z) {
-            if (offset.y >= 0) {
-                offset = new BABYLON.Vector3(0, 0.5, 0);
-            }
-            else {
-                offset = new BABYLON.Vector3(0, -0.5, 0);
-            }
-        }
-        else if (Z >= X && Z >= Y) {
-            if (offset.z >= 0) {
-                offset = new BABYLON.Vector3(0, 0, 0.5);
-            }
-            else {
-                offset = new BABYLON.Vector3(0, 0, -0.5);
-            }
-        }
-        var pos = hitPos.divide(Data.XYZSize()).add(offset);
+    Editor.GetCreatePos = function (hitPos) {
+        hitPos = hitPos.divide(Data.XYZSize());
+        var epsilon = BABYLON.Vector3.Normalize(hitPos.subtract(Game.Instance.getCamera().position));
+        epsilon = epsilon.multiplyByFloats(0.1, 0.1, 0.1);
+        var pos = hitPos.subtract(epsilon);
         pos.x = Math.round(pos.x);
         pos.y = Math.round(pos.y);
         pos.z = Math.round(pos.z);
@@ -97,6 +73,9 @@ window.addEventListener("DOMContentLoaded", function () {
     });
     document.getElementById("blue").addEventListener("click", function () {
         Editor.setColor("blue");
+    });
+    document.getElementById("yellow").addEventListener("click", function () {
+        Editor.setColor("yellow");
     });
     document.getElementById("rotate").addEventListener("click", function () {
         Editor.rotate();

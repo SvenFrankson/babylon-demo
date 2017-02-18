@@ -2,11 +2,12 @@ var Meshes = (function () {
     function Meshes() {
     }
     Meshes.Initialize = function () {
-        var dataNames = ["cube", "s-bar", "m-bar", "l-bar"];
+        var dataNames = ["cube", "s-bar", "m-bar", "l-bar", "ground"];
         Meshes.List[dataNames[0]] = Meshes.CubeData();
         Meshes.List[dataNames[1]] = Meshes.SBarData();
         Meshes.List[dataNames[2]] = Meshes.MBarData();
-        alert(JSON.stringify(Meshes.List));
+        Meshes.List[dataNames[3]] = Meshes.MBarData();
+        Meshes.List[dataNames[4]] = Meshes.GroundData();
     };
     Meshes.CubeData = function () {
         var cubeData = new BABYLON.VertexData();
@@ -65,6 +66,7 @@ var Meshes = (function () {
         Meshes.PushQuad(vertices, 3, 7, 4, 0, positions, indices);
         Meshes.PushQuad(vertices, 2, 6, 7, 3, positions, indices);
         Meshes.PushSlot(0, 0, 0, positions, indices);
+        Meshes.PushSlot(0, 0, 1, positions, indices);
         var normals = new Array();
         BABYLON.VertexData.ComputeNormals(positions, indices, normals);
         cubeData.positions = positions;
@@ -97,6 +99,45 @@ var Meshes = (function () {
         Meshes.PushQuad(vertices, 3, 7, 4, 0, positions, indices);
         Meshes.PushQuad(vertices, 2, 6, 7, 3, positions, indices);
         Meshes.PushSlot(0, 0, 0, positions, indices);
+        Meshes.PushSlot(0, 0, 1, positions, indices);
+        Meshes.PushSlot(0, 0, 2, positions, indices);
+        Meshes.PushSlot(0, 0, 3, positions, indices);
+        var normals = new Array();
+        BABYLON.VertexData.ComputeNormals(positions, indices, normals);
+        cubeData.positions = positions;
+        cubeData.indices = indices;
+        cubeData.normals = normals;
+        return cubeData;
+    };
+    Meshes.GroundData = function () {
+        var cubeData = new BABYLON.VertexData();
+        var vertices = new Array();
+        var positions = new Array();
+        var indices = new Array();
+        vertices[0] = new Array(-10.5, -0.5, -10.5);
+        vertices[1] = new Array(10.5, -0.5, -10.5);
+        vertices[2] = new Array(10.5, -0.5, 10.5);
+        vertices[3] = new Array(-10.5, -0.5, 10.5);
+        vertices[4] = new Array(-10.5, 0.5, -10.5);
+        vertices[5] = new Array(10.5, 0.5, -10.5);
+        vertices[6] = new Array(10.5, 0.5, 10.5);
+        vertices[7] = new Array(-10.5, 0.5, 10.5);
+        for (var i = 0; i < vertices.length; i++) {
+            vertices[i][0] = vertices[i][0] * Data.XSize;
+            vertices[i][1] = vertices[i][1] * Data.YSize;
+            vertices[i][2] = vertices[i][2] * Data.ZSize;
+        }
+        Meshes.PushQuad(vertices, 0, 1, 2, 3, positions, indices);
+        Meshes.PushQuad(vertices, 1, 5, 6, 2, positions, indices);
+        Meshes.PushQuad(vertices, 5, 4, 7, 6, positions, indices);
+        Meshes.PushQuad(vertices, 0, 4, 5, 1, positions, indices);
+        Meshes.PushQuad(vertices, 3, 7, 4, 0, positions, indices);
+        Meshes.PushQuad(vertices, 2, 6, 7, 3, positions, indices);
+        for (var i = -10; i <= 10; i++) {
+            for (var k = -10; k <= 10; k++) {
+                Meshes.PushSlot(i, 0, k, positions, indices);
+            }
+        }
         var normals = new Array();
         BABYLON.VertexData.ComputeNormals(positions, indices, normals);
         cubeData.positions = positions;
@@ -124,9 +165,9 @@ var Meshes = (function () {
         vertices[15] = new Array(-0.25, 0.7, -0.1);
         vertices[16] = new Array(0, 0.7, 0);
         for (var i = 0; i < vertices.length; i++) {
-            vertices[i][0] = vertices[i][0] * Data.XSize;
-            vertices[i][1] = vertices[i][1] * Data.YSize;
-            vertices[i][2] = vertices[i][2] * Data.ZSize;
+            vertices[i][0] = (vertices[i][0] + x) * Data.XSize;
+            vertices[i][1] = (vertices[i][1] + y) * Data.YSize;
+            vertices[i][2] = (vertices[i][2] + z) * Data.ZSize;
         }
         Meshes.PushQuad(vertices, 0, 8, 9, 1, positions, indices);
         Meshes.PushQuad(vertices, 1, 9, 10, 2, positions, indices);

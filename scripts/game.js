@@ -19,7 +19,6 @@ var Game = (function () {
         this._camera.setTarget(BABYLON.Vector3.Zero());
         this._camera.attachControl(this._canvas, false);
         this._light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), this._scene);
-        BABYLON.MeshBuilder.CreateGround("ground1", { width: 6, height: 6, subdivisions: 2 }, this._scene);
     };
     Game.prototype.animate = function () {
         var _this = this;
@@ -42,7 +41,5 @@ window.addEventListener("DOMContentLoaded", function () {
     Materials.Initialize();
     Meshes.Initialize();
     Editor.setPreview();
-    new GameObject(new BABYLON.Vector3(0, 0, 0), 0, "cube", "red");
-    new GameObject(new BABYLON.Vector3(1, 0, 0), 0, "s-bar", "green");
-    new GameObject(new BABYLON.Vector3(0, 1, 0), 0, "cube", "blue");
+    new GameObject(new BABYLON.Vector3(0, -1, 0), 0, "ground", "green");
 });
