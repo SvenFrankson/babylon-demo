@@ -37,7 +37,7 @@ class GameObject {
   private Initialize(disposable : boolean, isEditor : boolean): void {
     // load information concerning GameObject lock
     if (!isEditor) {
-      this._lockLocal = LocalLocks.GetLocalLock(this._ref);
+      this._lockLocal = LocalLocks.List[this._ref];
       if (!this._lockLocal) {
         alert("Lock : Unknown Ref " + this._ref + ", can't instantiate GameObject");
         return;

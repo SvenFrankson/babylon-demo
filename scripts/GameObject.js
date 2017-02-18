@@ -22,7 +22,7 @@ var GameObject = (function () {
     };
     GameObject.prototype.Initialize = function (disposable, isEditor) {
         if (!isEditor) {
-            this._lockLocal = LocalLocks.GetLocalLock(this._ref);
+            this._lockLocal = LocalLocks.List[this._ref];
             if (!this._lockLocal) {
                 alert("Lock : Unknown Ref " + this._ref + ", can't instantiate GameObject");
                 return;

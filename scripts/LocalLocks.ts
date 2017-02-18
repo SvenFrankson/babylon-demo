@@ -1,7 +1,18 @@
 /// <reference path="../lib/babylon.2.4.d.ts"/>
+// get locallock foreach GameObject ref.
+// see SvenFrankson github wiki for informations about locallock concept.
 class LocalLocks {
 
-  public static GetLocalLock(ref : string): Array<BABYLON.Vector3> {
+  public static List : Array<Array<BABYLON.Vector3>> = new Array<Array<BABYLON.Vector3>>();
+
+  static Initialize(): void {
+    let dataNames : Array<string> = ["cube", "s-bar", "m-bar", "l-bar", "ground"];
+    for (let i : number = 0; i < dataNames.length; i++) {
+      LocalLocks.List[dataNames[i]] = LocalLocks.GetLocalLock(dataNames[i]);
+    }
+  }
+
+  private static GetLocalLock(ref : string): Array<BABYLON.Vector3> {
     let lockLocal : Array<BABYLON.Vector3> = null;
     if (ref === "cube") {
       lockLocal = [

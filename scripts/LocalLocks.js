@@ -1,6 +1,12 @@
 var LocalLocks = (function () {
     function LocalLocks() {
     }
+    LocalLocks.Initialize = function () {
+        var dataNames = ["cube", "s-bar", "m-bar", "l-bar", "ground"];
+        for (var i = 0; i < dataNames.length; i++) {
+            LocalLocks.List[dataNames[i]] = LocalLocks.GetLocalLock(dataNames[i]);
+        }
+    };
     LocalLocks.GetLocalLock = function (ref) {
         var lockLocal = null;
         if (ref === "cube") {
@@ -34,3 +40,4 @@ var LocalLocks = (function () {
     };
     return LocalLocks;
 }());
+LocalLocks.List = new Array();

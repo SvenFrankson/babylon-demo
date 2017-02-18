@@ -40,6 +40,7 @@ window.addEventListener("DOMContentLoaded", function () {
     editorPreview.animate();
     Materials.Initialize();
     Meshes.Initialize();
+    LocalLocks.Initialize();
     Editor.setPreview();
     new GameObject(new BABYLON.Vector3(0, -1, 0), 0, "ground", "green");
 });
