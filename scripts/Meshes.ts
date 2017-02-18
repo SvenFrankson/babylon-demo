@@ -359,7 +359,7 @@ class Meshes {
     Meshes.PushSlot(0, 0, 6, positions, indices);
     Meshes.PushSlot(0, 0, 7, positions, indices);
     Meshes.PushSlot(1, 0, 6, positions, indices);
-    Meshes.PushSlot(1, 0, 7, positions, indices)
+    Meshes.PushSlot(1, 0, 7, positions, indices);
 
     let normals : Array<number> = new Array<number>();
     BABYLON.VertexData.ComputeNormals(positions, indices, normals);

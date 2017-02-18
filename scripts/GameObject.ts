@@ -5,6 +5,9 @@ class GameObject {
   // list all locks taken by activate gameobjects.
   private static Locks: Array<string> = new Array<string>();
   private _id: number;
+  getId(): number {
+    return this._id;
+  }
   private _pos: BABYLON.Vector3;
   getPos(): BABYLON.Vector3 {
     return this._pos;
@@ -17,8 +20,13 @@ class GameObject {
   private _lockWorld : Array<string>;
   private _disposable : boolean;
 
-  constructor(pos: BABYLON.Vector3, rot: number, ref: string, col : string, disposable : boolean = true, isEditor : boolean = false) {
-    if (!isEditor) {
+  constructor(
+    pos: BABYLON.Vector3,
+    rot: number, ref: string, col : string,
+    disposable : boolean = true,
+    isEditor : boolean = false,
+    isCursor : boolean = false) {
+    if (!isEditor && !isCursor) {
       this._id = GameObject.Id;
       GameObject.Id = GameObject.Id + 1;
       GameObject.Instances[this._id] = this;
@@ -32,12 +40,12 @@ class GameObject {
     this._col = col;
     this._disposable = disposable;
 
-    this.Initialize(disposable, isEditor);
+    this.Initialize(disposable, isEditor, isCursor);
   }
 
-  private Initialize(disposable : boolean, isEditor : boolean): void {
+  private Initialize(disposable : boolean, isEditor : boolean, isCursor : boolean): void {
     // load information concerning GameObject lock
-    if (!isEditor) {
+    if (!isEditor && !isCursor) {
       this._lockLocal = LocalLocks.List[this._ref];
       if (!this._lockLocal) {
         alert("Lock : Unknown Ref " + this._ref + ", can't instantiate GameObject");
@@ -55,10 +63,12 @@ class GameObject {
       return;
     }
     let mat : BABYLON.Material = null;
-    if (!isEditor) {
+    if (isEditor) {
+      mat = Materials.ListEditor[this._col];
+    } else if (isCursor) {
       mat = Materials.List[this._col];
     } else {
-      mat = Materials.ListEditor[this._col];
+      mat = Materials.List[this._col];
     }
     if (!mat) {
       alert("Unknown Color " + this._col + ", can't instantiate GameObject");
@@ -78,31 +88,33 @@ class GameObject {
 
     data.applyToMesh(this._mesh);
     this._mesh.material = mat;
-    if (!isEditor) {
+    if (!isEditor && !isCursor) {
       this.Lock();
     }
 
-    // run animation
-    let anim : BABYLON.Animation = new BABYLON.Animation(
-      "popup",
-      "scaling",
-      60,
-      BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
-      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
+    if (!isCursor) {
+      // run animation
+      let anim : BABYLON.Animation = new BABYLON.Animation(
+        "popup",
+        "scaling",
+        60,
+        BABYLON.Animation.ANIMATIONTYPE_VECTOR3,
+        BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+      );
 
-    let keys : Array<{frame : number, value : BABYLON.Vector3}> = new Array<{frame : number, value : BABYLON.Vector3}>();
-    keys.push({
-      frame: 0,
-      value: new BABYLON.Vector3(0.1, 0.1, 0.1)
-    });
-    keys.push({
-      frame: 10,
-      value: new BABYLON.Vector3(1, 1, 1)
-    });
-    anim.setKeys(keys);
-    this._mesh.animations.push(anim);
-    Game.Instance.getScene().beginAnimation(this._mesh, 0, 10, true);
+      let keys : Array<{frame : number, value : BABYLON.Vector3}> = new Array<{frame : number, value : BABYLON.Vector3}>();
+      keys.push({
+        frame: 0,
+        value: new BABYLON.Vector3(0.1, 0.1, 0.1)
+      });
+      keys.push({
+        frame: 10,
+        value: new BABYLON.Vector3(1, 1, 1)
+      });
+      anim.setKeys(keys);
+      this._mesh.animations.push(anim);
+      Game.Instance.getScene().beginAnimation(this._mesh, 0, 10, true);
+    }
   }
 
   private SetLockWorld(): boolean {

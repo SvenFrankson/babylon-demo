@@ -30,7 +30,23 @@ class Editor {
     Editor._preview = new GameObject(new BABYLON.Vector3(0, 0, 0), Editor._rot, Editor._ref, Editor._color, true, true);
   }
 
+  // instance of GameObject showing the current properties values (shown in the main canvas)
+  private static _cursorPos : BABYLON.Vector3 = new BABYLON.Vector3(0, 0, 0);
+  public static _cursor : GameObject;
+  public static setCursor(): void {
+    if (Editor._cursor) {
+      Editor._cursor.Dispose();
+    }
+    Editor._cursor = new GameObject(Editor._cursorPos, Editor._rot, Editor._ref, Editor._color, true, false, true);
+  }
+  public static disposeCursor(): void {
+    if (Editor._cursor) {
+      Editor._cursor.Dispose();
+    }
+  }
+
   public static OnClick(evt : MouseEvent): void {
+    Editor.disposeCursor();
     let coordinates : {x : number, y : number} = Editor.GetRelativeMousePos(evt);
     if (Editor._ref !== "delete") {
       Editor.CreateGameObjectAtPos(coordinates);
@@ -62,8 +78,7 @@ class Editor {
           let gameObject : GameObject = GameObject.FindByMesh(mesh);
           // if GameObject has been found.
           if (gameObject) {
-            let newPos : BABYLON.Vector3 = Editor.GetCoordinates(pickResult.pickedPoint);
-            new GameObject(newPos, Editor._rot, Editor._ref, Editor._color);
+            new GameObject(Editor._cursorPos, Editor._rot, Editor._ref, Editor._color);
           }
         }
       }
@@ -87,6 +102,39 @@ class Editor {
     }
   };
 
+  public static OnMouseOver(evt : MouseEvent): void {
+    let coordinates : {x : number, y : number} = Editor.GetRelativeMousePos(evt);
+    if (Editor._ref !== "delete") {
+      Editor.CreateCursorAtPos(coordinates);
+    }
+  }
+
+  // do all checks before instantiating a GameObject
+  public static CreateCursorAtPos(coordinates : {x : number, y : number}): void {
+    var pickResult : BABYLON.PickingInfo = Game.Instance.getScene().pick(coordinates.x, coordinates.y);
+    // if clic hits an object.
+    if (pickResult.hit) {
+      let mesh : BABYLON.AbstractMesh = pickResult.pickedMesh;
+      // if clic hits a mesh.
+      if (mesh) {
+        // if Mesh is a GameObject.
+        if (mesh.name.indexOf("GameObject_") === 0) {
+          let gameObject : GameObject = GameObject.FindByMesh(mesh);
+          // if GameObject has been found.
+          if (gameObject) {
+            // if GameObject is not cursor or preview
+            if (gameObject.getId() !== -1) {
+              Editor._cursorPos = Editor.GetCoordinates(pickResult.pickedPoint);
+              Editor.setCursor();
+            }
+          }
+        }
+      }
+    } else {
+      Editor.disposeCursor();
+    }
+  };
+
   // given a clic position.
   // returns the most likely desired position for creating a new GameObject.
   // note : as no mesh normal is available easily, might send slightly unexpected result when hit is close to element edges.
@@ -105,8 +153,9 @@ class Editor {
 }
 
 // add interface listeners to take input from DOM.
-window.addEventListener("click", Editor.OnClick);
 window.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("renderCanvas").addEventListener("click", Editor.OnClick);
+  document.getElementById("renderCanvas").addEventListener("mousemove", Editor.OnMouseOver);
   document.getElementById("red").addEventListener("click", () => {
     Editor.setColor("red");
   });

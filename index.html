@@ -18,6 +18,7 @@
 <body>
   <div class="page-header text-center">
     <h1>BabylonJS Demo</h1>
+    requires modern webGL compatible web-browser with javascript enabled. Not mobile responsive (yet...)
   </div>
   <div class="row">
     <div class="col-xs-1">
@@ -25,6 +26,16 @@
     </div>
     <div class="col-xs-8">
       <canvas id="renderCanvas"></canvas>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">External links</h3>
+        </div>
+        <div class="panel-body">
+          <a href="https://github.com/SvenFrankson/babylon-demo"><button type="button" class="btn btn-default">Source Code</button></a>
+          <a href="https://github.com/SvenFrankson/babylon-demo/issues"><button type="button" class="btn btn-default">Found a bug ?</button></a>
+          <a href="http://svenfrankson.com/"><button type="button" class="btn btn-default">About</button></a>
+        </div>
+      </div>
     </div>
     <div class="col-xs-2">
       <div class="row">
@@ -39,31 +50,27 @@
       </div>
       <div class="row">
         <div class="col-xs-6">
-          <div class="row">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Colors</h3>
-              </div>
-              <div class="panel-body">
-                <div class="btn-group-vertical" role="group">
-                  <button id="red" type="button" class="btn btn-default">Red</button>
-                  <button id="green" type="button" class="btn btn-default">Green</button>
-                  <button id="blue" type="button" class="btn btn-default">Blue</button>
-                  <button id="yellow" type="button" class="btn btn-default">Yellow</button>
-                </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Colors</h3>
+            </div>
+            <div class="panel-body text-center">
+              <div class="btn-group-vertical" role="group">
+                <button id="red" type="button" class="btn btn-default">Red</button>
+                <button id="green" type="button" class="btn btn-default">Green</button>
+                <button id="blue" type="button" class="btn btn-default">Blue</button>
+                <button id="yellow" type="button" class="btn btn-default">Yellow</button>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Commands</h3>
-              </div>
-              <div class="panel-body">
-                <div class="btn-group-vertical" role="group">
-                  <button id="rotate" type="button" class="btn btn-default">Rotate</button>
-                  <button id="delete" type="button" class="btn btn-default">Delete</button>
-                </div>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Commands</h3>
+            </div>
+            <div class="panel-body text-center">
+              <div class="btn-group-vertical" role="group">
+                <button id="rotate" type="button" class="btn btn-default">Rotate</button>
+                <button id="delete" type="button" class="btn btn-default">Delete</button>
               </div>
             </div>
           </div>
@@ -73,7 +80,7 @@
             <div class="panel-heading">
               <h3 class="panel-title">Shapes</h3>
             </div>
-            <div class="panel-body">
+            <div class="panel-body text-center">
               <div class="btn-group-vertical" role="group">
                 <button id="cube" type="button" class="btn btn-default">Cube</button>
                 <button id="s-bar" type="button" class="btn btn-default">S-Bar</button>
