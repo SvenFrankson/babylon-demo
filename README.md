@@ -1,6 +1,10 @@
 # babylon-demo
 BabylonJS demo for academic purpose.
 
+# Try it here !
+
+Go to http://svenfrankson.github.io/BabylonDemoWeb/index.html
+
 # Run the project
 
 ## Easy way
