@@ -21,8 +21,20 @@ var GameObject = (function () {
     GameObject.prototype.getId = function () {
         return this._id;
     };
-    GameObject.prototype.getPos = function () {
+    GameObject.prototype.GetPos = function () {
         return this._pos;
+    };
+    GameObject.prototype.GetRot = function () {
+        return this._rot;
+    };
+    GameObject.prototype.GetRef = function () {
+        return this._ref;
+    };
+    GameObject.prototype.GetCol = function () {
+        return this._col;
+    };
+    GameObject.GameObjectFromData = function (data) {
+        return new GameObject(new BABYLON.Vector3(data.posX, data.posY, data.posZ), data.rot, data.ref, data.col);
     };
     GameObject.prototype.Initialize = function (disposable, isEditor, isCursor) {
         if (!isEditor && !isCursor) {
@@ -155,6 +167,26 @@ var GameObject = (function () {
             return GameObject.Instances[id];
         }
         return null;
+    };
+    GameObject.InstancesToJSON = function () {
+        var datas = new Array();
+        for (var i = 0; i < GameObject.Instances.length; i++) {
+            var g = GameObject.Instances[i];
+            if (g) {
+                if (g.getId() > 0) {
+                    var data = new GameObjectData();
+                    data.SetFromGameObject(g);
+                    datas.push(data);
+                }
+            }
+        }
+        return JSON.stringify(datas);
+    };
+    GameObject.InstantiateFromJSON = function (jsonDatas) {
+        var datas = JSON.parse(jsonDatas);
+        for (var i = 0; i < datas.length; i++) {
+            GameObject.GameObjectFromData(datas[i]);
+        }
     };
     return GameObject;
 }());

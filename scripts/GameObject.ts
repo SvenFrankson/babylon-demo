@@ -1,4 +1,5 @@
 /// <reference path="../lib/babylon.2.4.d.ts"/>
+/// <reference path="./GameObjectData.ts"/>
 class GameObject {
   private static Id: number = 0;
   private static Instances: Array<GameObject> = new Array<GameObject>();
@@ -8,13 +9,22 @@ class GameObject {
   getId(): number {
     return this._id;
   }
-  private _pos: BABYLON.Vector3;
-  getPos(): BABYLON.Vector3 {
+  private _pos : BABYLON.Vector3;
+  public GetPos(): BABYLON.Vector3 {
     return this._pos;
   }
-  private _rot: number;
-  private _ref: string;
-  private _col: string;
+  private _rot : number;
+  public GetRot(): number {
+    return this._rot;
+  }
+  private _ref : string;
+  public GetRef(): string {
+    return this._ref;
+  }
+  private _col : string;
+  public GetCol(): string {
+    return this._col;
+  }
   private _mesh: BABYLON.Mesh;
   private _lockLocal : Array<BABYLON.Vector3>;
   private _lockWorld : Array<string>;
@@ -41,6 +51,10 @@ class GameObject {
     this._disposable = disposable;
 
     this.Initialize(disposable, isEditor, isCursor);
+  }
+
+  public static GameObjectFromData(data : GameObjectData): GameObject {
+    return new GameObject(new BABYLON.Vector3(data.posX, data.posY, data.posZ), data.rot, data.ref, data.col);
   }
 
   private Initialize(disposable : boolean, isEditor : boolean, isCursor : boolean): void {
@@ -193,5 +207,27 @@ class GameObject {
       return GameObject.Instances[id];
     }
     return null;
+  }
+
+  public static InstancesToJSON(): string {
+    let datas : Array<GameObjectData> = new Array<GameObjectData>();
+    for (let i : number = 0; i < GameObject.Instances.length; i++) {
+      let g : GameObject = GameObject.Instances[i];
+      if (g) {
+        if (g.getId() > 0) {
+          let data : GameObjectData = new GameObjectData();
+          data.SetFromGameObject(g);
+          datas.push(data);
+        }
+      }
+    }
+    return JSON.stringify(datas);
+  }
+
+  public static InstantiateFromJSON(jsonDatas : string): void {
+    let datas : Array<GameObjectData> = JSON.parse(jsonDatas);
+    for (let i : number = 0; i < datas.length; i++) {
+      GameObject.GameObjectFromData(datas[i]);
+    }
   }
 }
