@@ -2,6 +2,7 @@ var GameObjectData = (function () {
     function GameObjectData() {
     }
     GameObjectData.prototype.SetFromGameObject = function (g) {
+        this.id = g.GetId();
         this.posX = g.GetPos().x;
         this.posY = g.GetPos().y;
         this.posZ = g.GetPos().z;
@@ -11,8 +12,3 @@ var GameObjectData = (function () {
     };
     return GameObjectData;
 }());
-window.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("save").addEventListener("click", function () {
-        document.getElementById("json-datas").innerHTML = GameObject.InstancesToJSON();
-    });
-});

@@ -3,10 +3,14 @@
 class GameObject {
   private static Id: number = 0;
   private static Instances: Array<GameObject> = new Array<GameObject>();
+  // for debug purpose mostly
+  public static DebugOutputInstances(): void {
+    document.getElementById("debug-info").innerHTML = GameObject.InstancesToJSON();
+  }
   // list all locks taken by activate gameobjects.
   private static Locks: Array<string> = new Array<string>();
   private _id: number;
-  getId(): number {
+  public GetId(): number {
     return this._id;
   }
   private _pos : BABYLON.Vector3;
@@ -88,12 +92,15 @@ class GameObject {
       alert("Unknown Color " + this._col + ", can't instantiate GameObject");
       return;
     }
-    if (!isEditor) {
-      this._mesh = new BABYLON.Mesh("GameObject_" + this._id, Game.Instance.getScene());
+    if (isCursor) {
+      this._mesh = new BABYLON.Mesh("Cursor", Game.Instance.getScene());
       this._mesh.position = this._pos.multiply(Data.XYZSize());
-    } else {
-      this._mesh = new BABYLON.Mesh("GameObject_" + this._id, EditorPreview.Instance.getScene());
+    } else if (isEditor) {
+      this._mesh = new BABYLON.Mesh("Preview", EditorPreview.Instance.getScene());
       this._mesh.position = new BABYLON.Vector3(0, 0, 0);
+    } else {
+        this._mesh = new BABYLON.Mesh("GameObject_" + this._id, Game.Instance.getScene());
+        this._mesh.position = this._pos.multiply(Data.XYZSize());
     }
     this._mesh.rotation = new BABYLON.Vector3(0, Math.PI / 2 * this._rot, 0);
     this._mesh.renderOutline = true;
@@ -196,6 +203,7 @@ class GameObject {
     if (this._disposable) {
       this.Unlock();
       this._mesh.dispose();
+      delete GameObject.Instances[this.GetId()];
       delete this;
     }
   }
@@ -203,7 +211,9 @@ class GameObject {
   public static FindByMesh(mesh: BABYLON.AbstractMesh): GameObject {
     let idString : string = mesh.name.slice(11);
     let id : number = parseInt(idString, 10);
+    console.log(id);
     if (id !== NaN) {
+      GameObject.DebugOutputInstances();
       return GameObject.Instances[id];
     }
     return null;
@@ -214,11 +224,9 @@ class GameObject {
     for (let i : number = 0; i < GameObject.Instances.length; i++) {
       let g : GameObject = GameObject.Instances[i];
       if (g) {
-        if (g.getId() > 0) {
-          let data : GameObjectData = new GameObjectData();
-          data.SetFromGameObject(g);
-          datas.push(data);
-        }
+        let data : GameObjectData = new GameObjectData();
+        data.SetFromGameObject(g);
+        datas.push(data);
       }
     }
     return JSON.stringify(datas);

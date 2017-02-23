@@ -77,10 +77,9 @@ var Editor = (function () {
         if (pickResult.hit) {
             var mesh = pickResult.pickedMesh;
             if (mesh) {
-                if (mesh.name.indexOf("GameObject_") === 0) {
-                    var gameObject = GameObject.FindByMesh(mesh);
-                    gameObject.Dispose();
-                }
+                console.log(mesh);
+                var gameObject = GameObject.FindByMesh(mesh);
+                gameObject.Dispose();
             }
         }
     };
@@ -99,7 +98,7 @@ var Editor = (function () {
                 if (mesh.name.indexOf("GameObject_") === 0) {
                     var gameObject = GameObject.FindByMesh(mesh);
                     if (gameObject) {
-                        if (gameObject.getId() !== -1) {
+                        if (gameObject.GetId() !== -1) {
                             Editor._cursorPos = Editor.GetCoordinates(pickResult.pickedPoint);
                             Editor.setCursor();
                         }

@@ -103,10 +103,9 @@ class Editor {
       // if clic hits a mesh.
       if (mesh) {
         // if Mesh is a GameObject.
-        if (mesh.name.indexOf("GameObject_") === 0) {
-          let gameObject : GameObject = GameObject.FindByMesh(mesh);
-          gameObject.Dispose();
-        }
+        console.log(mesh);
+        let gameObject : GameObject = GameObject.FindByMesh(mesh);
+        gameObject.Dispose();
       }
     }
   };
@@ -132,7 +131,7 @@ class Editor {
           // if GameObject has been found.
           if (gameObject) {
             // if GameObject is not cursor or preview
-            if (gameObject.getId() !== -1) {
+            if (gameObject.GetId() !== -1) {
               Editor._cursorPos = Editor.GetCoordinates(pickResult.pickedPoint);
               Editor.setCursor();
             }

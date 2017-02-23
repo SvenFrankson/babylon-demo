@@ -18,7 +18,10 @@ var GameObject = (function () {
         this._disposable = disposable;
         this.Initialize(disposable, isEditor, isCursor);
     }
-    GameObject.prototype.getId = function () {
+    GameObject.DebugOutputInstances = function () {
+        document.getElementById("debug-info").innerHTML = GameObject.InstancesToJSON();
+    };
+    GameObject.prototype.GetId = function () {
         return this._id;
     };
     GameObject.prototype.GetPos = function () {
@@ -67,13 +70,17 @@ var GameObject = (function () {
             alert("Unknown Color " + this._col + ", can't instantiate GameObject");
             return;
         }
-        if (!isEditor) {
-            this._mesh = new BABYLON.Mesh("GameObject_" + this._id, Game.Instance.getScene());
+        if (isCursor) {
+            this._mesh = new BABYLON.Mesh("Cursor", Game.Instance.getScene());
             this._mesh.position = this._pos.multiply(Data.XYZSize());
         }
-        else {
-            this._mesh = new BABYLON.Mesh("GameObject_" + this._id, EditorPreview.Instance.getScene());
+        else if (isEditor) {
+            this._mesh = new BABYLON.Mesh("Preview", EditorPreview.Instance.getScene());
             this._mesh.position = new BABYLON.Vector3(0, 0, 0);
+        }
+        else {
+            this._mesh = new BABYLON.Mesh("GameObject_" + this._id, Game.Instance.getScene());
+            this._mesh.position = this._pos.multiply(Data.XYZSize());
         }
         this._mesh.rotation = new BABYLON.Vector3(0, Math.PI / 2 * this._rot, 0);
         this._mesh.renderOutline = true;
@@ -157,13 +164,16 @@ var GameObject = (function () {
         if (this._disposable) {
             this.Unlock();
             this._mesh.dispose();
+            delete GameObject.Instances[this.GetId()];
             delete this;
         }
     };
     GameObject.FindByMesh = function (mesh) {
         var idString = mesh.name.slice(11);
         var id = parseInt(idString, 10);
+        console.log(id);
         if (id !== NaN) {
+            GameObject.DebugOutputInstances();
             return GameObject.Instances[id];
         }
         return null;
@@ -173,11 +183,9 @@ var GameObject = (function () {
         for (var i = 0; i < GameObject.Instances.length; i++) {
             var g = GameObject.Instances[i];
             if (g) {
-                if (g.getId() > 0) {
-                    var data = new GameObjectData();
-                    data.SetFromGameObject(g);
-                    datas.push(data);
-                }
+                var data = new GameObjectData();
+                data.SetFromGameObject(g);
+                datas.push(data);
             }
         }
         return JSON.stringify(datas);

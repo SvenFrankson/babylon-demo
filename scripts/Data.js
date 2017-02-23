@@ -7,5 +7,5 @@ var Data = (function () {
     return Data;
 }());
 Data.XSize = 0.7;
-Data.YSize = 0.9;
+Data.YSize = 0.3;
 Data.ZSize = 0.7;

@@ -1,5 +1,6 @@
 /// <reference path="../lib/babylon.2.4.d.ts"/>
 class GameObjectData {
+  public id: string;
   public posX : number;
   public posY : number;
   public posZ : number;
@@ -8,6 +9,7 @@ class GameObjectData {
   public col : string;
 
   public SetFromGameObject(g : GameObject): void {
+    this.id = g.GetId();
     this.posX = g.GetPos().x;
     this.posY = g.GetPos().y;
     this.posZ = g.GetPos().z;
@@ -16,9 +18,3 @@ class GameObjectData {
     this.col = g.GetCol();
   }
 }
-
-window.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("save").addEventListener("click", () => {
-    document.getElementById("json-datas").innerHTML = GameObject.InstancesToJSON();
-  });
-});
