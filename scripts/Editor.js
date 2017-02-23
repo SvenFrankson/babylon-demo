@@ -65,6 +65,7 @@ var Editor = (function () {
                 if (mesh.name.indexOf("GameObject_") === 0) {
                     var gameObject = GameObject.FindByMesh(mesh);
                     if (gameObject) {
+                        console.log("Create GameObject");
                         new GameObject(Editor._cursorPos, Editor._rot, Editor._ref, Editor._color);
                     }
                 }
@@ -77,7 +78,6 @@ var Editor = (function () {
         if (pickResult.hit) {
             var mesh = pickResult.pickedMesh;
             if (mesh) {
-                console.log(mesh);
                 var gameObject = GameObject.FindByMesh(mesh);
                 gameObject.Dispose();
             }
@@ -132,6 +132,9 @@ window.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("keydown", Editor.OnKeyDown);
     document.getElementById("renderCanvas").addEventListener("click", Editor.OnClick);
     document.getElementById("renderCanvas").addEventListener("mousemove", Editor.OnMouseOver);
+    document.getElementById("renderCanvas").addEventListener("mouseout", function () {
+        Editor.disposeCursor();
+    });
     var colors = document.getElementsByClassName("colorpicker");
     var _loop_1 = function (i) {
         var htmlColor = colors[i];
@@ -143,31 +146,20 @@ window.addEventListener("DOMContentLoaded", function () {
     for (var i = 0; i < colors.length; i++) {
         _loop_1(i);
     }
+    var shapes = document.getElementsByClassName("shape-picker");
+    var _loop_2 = function (i) {
+        var htmlShape = shapes[i];
+        htmlShape.addEventListener("click", function () {
+            Editor.setRef(htmlShape.id);
+        });
+    };
+    for (var i = 0; i < shapes.length; i++) {
+        _loop_2(i);
+    }
     document.getElementById("rotate").addEventListener("click", function () {
         Editor.rotate();
     });
     document.getElementById("delete").addEventListener("click", function () {
         Editor.setRef("delete");
-    });
-    document.getElementById("cube").addEventListener("click", function () {
-        Editor.setRef("cube");
-    });
-    document.getElementById("s-bar").addEventListener("click", function () {
-        Editor.setRef("s-bar");
-    });
-    document.getElementById("m-bar").addEventListener("click", function () {
-        Editor.setRef("m-bar");
-    });
-    document.getElementById("l-bar").addEventListener("click", function () {
-        Editor.setRef("l-bar");
-    });
-    document.getElementById("s-brick").addEventListener("click", function () {
-        Editor.setRef("s-brick");
-    });
-    document.getElementById("m-brick").addEventListener("click", function () {
-        Editor.setRef("m-brick");
-    });
-    document.getElementById("l-brick").addEventListener("click", function () {
-        Editor.setRef("l-brick");
     });
 });

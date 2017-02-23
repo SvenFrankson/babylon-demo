@@ -2,76 +2,32 @@ var LocalLocks = (function () {
     function LocalLocks() {
     }
     LocalLocks.Initialize = function () {
-        var dataNames = ["cube", "s-bar", "m-bar", "l-bar", "ground", "delete", "s-brick", "m-brick", "l-brick"];
-        for (var i = 0; i < dataNames.length; i++) {
-            LocalLocks.List[dataNames[i]] = LocalLocks.GetLocalLock(dataNames[i]);
-        }
+        LocalLocks.List["cube"] = LocalLocks.CreateLocalLock(1, 3, 1);
+        LocalLocks.List["s-bar"] = LocalLocks.CreateLocalLock(1, 3, 2);
+        LocalLocks.List["m-bar"] = LocalLocks.CreateLocalLock(1, 3, 4);
+        LocalLocks.List["l-bar"] = LocalLocks.CreateLocalLock(1, 3, 6);
+        LocalLocks.List["xl-bar"] = LocalLocks.CreateLocalLock(1, 3, 8);
+        LocalLocks.List["s-brick"] = LocalLocks.CreateLocalLock(2, 3, 2);
+        LocalLocks.List["m-brick"] = LocalLocks.CreateLocalLock(2, 3, 4);
+        LocalLocks.List["l-brick"] = LocalLocks.CreateLocalLock(2, 3, 6);
+        LocalLocks.List["xl-brick"] = LocalLocks.CreateLocalLock(2, 3, 8);
+        LocalLocks.List["square"] = LocalLocks.CreateLocalLock(1, 1, 1);
+        LocalLocks.List["s-line"] = LocalLocks.CreateLocalLock(1, 1, 2);
+        LocalLocks.List["m-line"] = LocalLocks.CreateLocalLock(1, 1, 4);
+        LocalLocks.List["l-line"] = LocalLocks.CreateLocalLock(1, 1, 6);
+        LocalLocks.List["xl-line"] = LocalLocks.CreateLocalLock(1, 1, 8);
+        LocalLocks.List["s-plate"] = LocalLocks.CreateLocalLock(2, 1, 2);
+        LocalLocks.List["m-plate"] = LocalLocks.CreateLocalLock(2, 1, 4);
+        LocalLocks.List["l-plate"] = LocalLocks.CreateLocalLock(2, 1, 6);
+        LocalLocks.List["xl-plate"] = LocalLocks.CreateLocalLock(2, 1, 8);
+        LocalLocks.List["ground"] = LocalLocks.CreateLocalLock(1, 1, 1);
     };
-    LocalLocks.GetLocalLock = function (ref) {
-        var lockLocal = null;
-        if (ref === "cube") {
-            lockLocal = [
-                new BABYLON.Vector3(0, 0, 0)
-            ];
-        }
-        else if (ref === "s-bar") {
-            lockLocal = [
-                new BABYLON.Vector3(0, 0, 0),
-                new BABYLON.Vector3(0, 0, 1)
-            ];
-        }
-        else if (ref === "m-bar") {
-            lockLocal = [
-                new BABYLON.Vector3(0, 0, 0),
-                new BABYLON.Vector3(0, 0, 1),
-                new BABYLON.Vector3(0, 0, 2),
-                new BABYLON.Vector3(0, 0, 3)
-            ];
-        }
-        else if (ref === "l-bar") {
-            lockLocal = [
-                new BABYLON.Vector3(0, 0, 0),
-                new BABYLON.Vector3(0, 0, 1),
-                new BABYLON.Vector3(0, 0, 2),
-                new BABYLON.Vector3(0, 0, 3),
-                new BABYLON.Vector3(0, 0, 4),
-                new BABYLON.Vector3(0, 0, 5),
-                new BABYLON.Vector3(0, 0, 6),
-                new BABYLON.Vector3(0, 0, 7)
-            ];
-        }
-        else if (ref === "ground") {
-            lockLocal = [];
-            for (var i = 10; i <= 10; i++) {
-                for (var k = 10; k <= 10; k++) {
-                    lockLocal.push(new BABYLON.Vector3(i, 0, k));
-                }
-            }
-        }
-        else if (ref === "delete") {
-            lockLocal = [];
-        }
-        else if (ref === "s-brick") {
-            lockLocal = [];
-            for (var i = 0; i <= 1; i++) {
-                for (var k = 0; k <= 1; k++) {
-                    lockLocal.push(new BABYLON.Vector3(i, 0, k));
-                }
-            }
-        }
-        else if (ref === "m-brick") {
-            lockLocal = [];
-            for (var i = 0; i <= 1; i++) {
-                for (var k = 0; k <= 3; k++) {
-                    lockLocal.push(new BABYLON.Vector3(i, 0, k));
-                }
-            }
-        }
-        else if (ref === "l-brick") {
-            lockLocal = [];
-            for (var i = 0; i <= 1; i++) {
-                for (var k = 0; k <= 7; k++) {
-                    lockLocal.push(new BABYLON.Vector3(i, 0, k));
+    LocalLocks.CreateLocalLock = function (width, height, length) {
+        var lockLocal = [];
+        for (var i = 0; i < width; i++) {
+            for (var j = 0; j < height; j++) {
+                for (var k = 0; k < length; k++) {
+                    lockLocal.push(new BABYLON.Vector3(i, j, k));
                 }
             }
         }

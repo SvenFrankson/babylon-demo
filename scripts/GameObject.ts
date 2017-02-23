@@ -13,40 +13,33 @@ class GameObject {
   public GetId(): number {
     return this._id;
   }
-  private _pos : BABYLON.Vector3;
+  private _pos: BABYLON.Vector3;
   public GetPos(): BABYLON.Vector3 {
     return this._pos;
   }
-  private _rot : number;
+  private _rot: number;
   public GetRot(): number {
     return this._rot;
   }
-  private _ref : string;
+  private _ref: string;
   public GetRef(): string {
     return this._ref;
   }
-  private _col : string;
+  private _col: string;
   public GetCol(): string {
     return this._col;
   }
   private _mesh: BABYLON.Mesh;
-  private _lockLocal : Array<BABYLON.Vector3>;
-  private _lockWorld : Array<string>;
-  private _disposable : boolean;
+  private _lockLocal: Array<BABYLON.Vector3>;
+  private _lockWorld: Array<string>;
+  private _disposable: boolean;
 
   constructor(
     pos: BABYLON.Vector3,
-    rot: number, ref: string, col : string,
-    disposable : boolean = true,
-    isEditor : boolean = false,
-    isCursor : boolean = false) {
-    if (!isEditor && !isCursor) {
-      this._id = GameObject.Id;
-      GameObject.Id = GameObject.Id + 1;
-      GameObject.Instances[this._id] = this;
-    } else {
-      this._id = -1;
-    }
+    rot: number, ref: string, col: string,
+    disposable: boolean = true,
+    isEditor: boolean = false,
+    isCursor: boolean = false) {
 
     this._pos = pos;
     this._rot = rot;
@@ -57,16 +50,16 @@ class GameObject {
     this.Initialize(disposable, isEditor, isCursor);
   }
 
-  public static GameObjectFromData(data : GameObjectData): GameObject {
+  public static GameObjectFromData(data: GameObjectData): GameObject {
     return new GameObject(new BABYLON.Vector3(data.posX, data.posY, data.posZ), data.rot, data.ref, data.col);
   }
 
-  private Initialize(disposable : boolean, isEditor : boolean, isCursor : boolean): void {
+  private Initialize(disposable: boolean, isEditor: boolean, isCursor: boolean): void {
     // load information concerning GameObject lock
     if (!isEditor && !isCursor) {
       this._lockLocal = LocalLocks.List[this._ref];
       if (!this._lockLocal) {
-        alert("Lock : Unknown Ref " + this._ref + ", can't instantiate GameObject");
+        alert("Lock: Unknown Ref " + this._ref + ", can't instantiate GameObject");
         return;
       }
       this.SetLockWorld();
@@ -75,12 +68,21 @@ class GameObject {
         return;
       }
     }
-    let data : BABYLON.VertexData = Meshes.List[this._ref];
+
+    if (!isEditor && !isCursor) {
+      this._id = GameObject.Id;
+      GameObject.Id = GameObject.Id + 1;
+      GameObject.Instances[this._id] = this;
+    } else {
+      this._id = -1;
+    }
+
+    let data: BABYLON.VertexData = Meshes.List[this._ref];
     if (!data) {
-      alert("Data : Unknown Ref " + this._ref + ", can't instantiate GameObject");
+      alert("Data: Unknown Ref " + this._ref + ", can't instantiate GameObject");
       return;
     }
-    let mat : BABYLON.Material = null;
+    let mat: BABYLON.Material = null;
     if (isEditor) {
       mat = Materials.ListEditor[this._col];
     } else if (isCursor) {
@@ -115,7 +117,7 @@ class GameObject {
 
     if (!isCursor) {
       // run animation
-      let anim : BABYLON.Animation = new BABYLON.Animation(
+      let anim: BABYLON.Animation = new BABYLON.Animation(
         "popup",
         "scaling",
         60,
@@ -123,7 +125,7 @@ class GameObject {
         BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
       );
 
-      let keys : Array<{frame : number, value : BABYLON.Vector3}> = new Array<{frame : number, value : BABYLON.Vector3}>();
+      let keys: Array<{frame: number, value: BABYLON.Vector3}> = new Array<{frame: number, value: BABYLON.Vector3}>();
       keys.push({
         frame: 0,
         value: new BABYLON.Vector3(0.1, 0.1, 0.1)
@@ -140,8 +142,8 @@ class GameObject {
 
   private SetLockWorld(): boolean {
     this._lockWorld = new Array<string>();
-    let lockWorldVector : Array<BABYLON.Vector3> = new Array<BABYLON.Vector3>();
-    for (let i : number = 0; i < this._lockLocal.length; i++) {
+    let lockWorldVector: Array<BABYLON.Vector3> = new Array<BABYLON.Vector3>();
+    for (let i: number = 0; i < this._lockLocal.length; i++) {
       if (this._rot === 0) {
         lockWorldVector[i] = new BABYLON.Vector3(this._lockLocal[i].x, this._lockLocal[i].y, this._lockLocal[i].z);
       }
@@ -154,7 +156,7 @@ class GameObject {
       }
     }
 
-    for (let i : number = 0; i < lockWorldVector.length; i++) {
+    for (let i: number = 0; i < lockWorldVector.length; i++) {
       lockWorldVector[i] = lockWorldVector[i].add(this._pos);
       this._lockWorld.push(lockWorldVector[i].x + "_" + lockWorldVector[i].y + "_" + lockWorldVector[i].z);
     }
@@ -164,7 +166,7 @@ class GameObject {
   // check if all locks can be taken.
   // having all locks free means the GameObject has enough space to be put in the scene.
   private CanLock(): boolean {
-    for (let i : number = 0; i < this._lockWorld.length; i++) {
+    for (let i: number = 0; i < this._lockWorld.length; i++) {
       if (GameObject.Locks.indexOf(this._lockWorld[i]) !== -1) {
         return false;
       }
@@ -176,8 +178,8 @@ class GameObject {
   // call CanLock() before to check if all locks are free to be taken.
   // returns false if a lock had already been taken.
   private Lock(): boolean {
-    let ok : boolean = true;
-    for (let i : number = 0; i < this._lockWorld.length; i++) {
+    let ok: boolean = true;
+    for (let i: number = 0; i < this._lockWorld.length; i++) {
       if (GameObject.Locks.indexOf(this._lockWorld[i]) === -1) {
         GameObject.Locks.push(this._lockWorld[i]);
       } else {
@@ -190,8 +192,8 @@ class GameObject {
   // release all locks for the gameObject.
   private Unlock(): void {
     if (this._lockWorld) {
-      for (let i : number = 0; i < this._lockWorld.length; i++) {
-        let index : number = GameObject.Locks.indexOf(this._lockWorld[i]);
+      for (let i: number = 0; i < this._lockWorld.length; i++) {
+        let index: number = GameObject.Locks.indexOf(this._lockWorld[i]);
         if (index !== -1) {
           GameObject.Locks.splice(index, 1);
         }
@@ -209,8 +211,8 @@ class GameObject {
   }
 
   public static FindByMesh(mesh: BABYLON.AbstractMesh): GameObject {
-    let idString : string = mesh.name.slice(11);
-    let id : number = parseInt(idString, 10);
+    let idString: string = mesh.name.slice(11);
+    let id: number = parseInt(idString, 10);
     console.log(id);
     if (id !== NaN) {
       GameObject.DebugOutputInstances();
@@ -220,11 +222,11 @@ class GameObject {
   }
 
   public static InstancesToJSON(): string {
-    let datas : Array<GameObjectData> = new Array<GameObjectData>();
-    for (let i : number = 0; i < GameObject.Instances.length; i++) {
-      let g : GameObject = GameObject.Instances[i];
+    let datas: Array<GameObjectData> = new Array<GameObjectData>();
+    for (let i: number = 0; i < GameObject.Instances.length; i++) {
+      let g: GameObject = GameObject.Instances[i];
       if (g) {
-        let data : GameObjectData = new GameObjectData();
+        let data: GameObjectData = new GameObjectData();
         data.SetFromGameObject(g);
         datas.push(data);
       }
@@ -232,9 +234,9 @@ class GameObject {
     return JSON.stringify(datas);
   }
 
-  public static InstantiateFromJSON(jsonDatas : string): void {
-    let datas : Array<GameObjectData> = JSON.parse(jsonDatas);
-    for (let i : number = 0; i < datas.length; i++) {
+  public static InstantiateFromJSON(jsonDatas: string): void {
+    let datas: Array<GameObjectData> = JSON.parse(jsonDatas);
+    for (let i: number = 0; i < datas.length; i++) {
       GameObject.GameObjectFromData(datas[i]);
     }
   }

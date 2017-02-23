@@ -3,14 +3,6 @@ var GameObject = (function () {
         if (disposable === void 0) { disposable = true; }
         if (isEditor === void 0) { isEditor = false; }
         if (isCursor === void 0) { isCursor = false; }
-        if (!isEditor && !isCursor) {
-            this._id = GameObject.Id;
-            GameObject.Id = GameObject.Id + 1;
-            GameObject.Instances[this._id] = this;
-        }
-        else {
-            this._id = -1;
-        }
         this._pos = pos;
         this._rot = rot;
         this._ref = ref;
@@ -43,7 +35,7 @@ var GameObject = (function () {
         if (!isEditor && !isCursor) {
             this._lockLocal = LocalLocks.List[this._ref];
             if (!this._lockLocal) {
-                alert("Lock : Unknown Ref " + this._ref + ", can't instantiate GameObject");
+                alert("Lock: Unknown Ref " + this._ref + ", can't instantiate GameObject");
                 return;
             }
             this.SetLockWorld();
@@ -51,9 +43,17 @@ var GameObject = (function () {
                 return;
             }
         }
+        if (!isEditor && !isCursor) {
+            this._id = GameObject.Id;
+            GameObject.Id = GameObject.Id + 1;
+            GameObject.Instances[this._id] = this;
+        }
+        else {
+            this._id = -1;
+        }
         var data = Meshes.List[this._ref];
         if (!data) {
-            alert("Data : Unknown Ref " + this._ref + ", can't instantiate GameObject");
+            alert("Data: Unknown Ref " + this._ref + ", can't instantiate GameObject");
             return;
         }
         var mat = null;
