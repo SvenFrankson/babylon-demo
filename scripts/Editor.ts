@@ -158,12 +158,19 @@ class Editor {
 
     return pos;
   }
+
+  public static LoadJSONDescription() {
+    let jsonDescription: string = (document.getElementById("load-input-content") as HTMLTextAreaElement).value;
+    alert(jsonDescription);
+    GameObject.InstantiateFromJSON(jsonDescription);
+  }
 }
 
 // add interface listeners to take input from DOM.
 window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("keydown", Editor.OnKeyDown);
   document.getElementById("renderCanvas").addEventListener("click", Editor.OnClick);
+  document.getElementById("load-input-btn").addEventListener("click", Editor.LoadJSONDescription);
   document.getElementById("renderCanvas").addEventListener("mousemove", Editor.OnMouseOver);
   document.getElementById("renderCanvas").addEventListener("mouseout", () => {
     Editor.disposeCursor();

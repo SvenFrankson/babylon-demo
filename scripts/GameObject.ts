@@ -5,7 +5,7 @@ class GameObject {
   private static Instances: Array<GameObject> = new Array<GameObject>();
   // for debug purpose mostly
   public static DebugOutputInstances(): void {
-    document.getElementById("debug-info").innerHTML = GameObject.InstancesToJSON();
+    document.getElementById("save-output").innerHTML = GameObject.InstancesToJSON();
   }
   // list all locks taken by activate gameobjects.
   private static Locks: Array<string> = new Array<string>();

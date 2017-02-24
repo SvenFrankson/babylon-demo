@@ -11,7 +11,7 @@ var GameObject = (function () {
         this.Initialize(disposable, isEditor, isCursor);
     }
     GameObject.DebugOutputInstances = function () {
-        document.getElementById("debug-info").innerHTML = GameObject.InstancesToJSON();
+        document.getElementById("save-output").innerHTML = GameObject.InstancesToJSON();
     };
     GameObject.prototype.GetId = function () {
         return this._id;

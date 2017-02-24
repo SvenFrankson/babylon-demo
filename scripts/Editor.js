@@ -122,6 +122,11 @@ var Editor = (function () {
         pos.z = Math.round(pos.z);
         return pos;
     };
+    Editor.LoadJSONDescription = function () {
+        var jsonDescription = document.getElementById("load-input-content").value;
+        alert(jsonDescription);
+        GameObject.InstantiateFromJSON(jsonDescription);
+    };
     return Editor;
 }());
 Editor._ref = "cube";
@@ -131,6 +136,7 @@ Editor._cursorPos = new BABYLON.Vector3(0, 0, 0);
 window.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("keydown", Editor.OnKeyDown);
     document.getElementById("renderCanvas").addEventListener("click", Editor.OnClick);
+    document.getElementById("load-input-btn").addEventListener("click", Editor.LoadJSONDescription);
     document.getElementById("renderCanvas").addEventListener("mousemove", Editor.OnMouseOver);
     document.getElementById("renderCanvas").addEventListener("mouseout", function () {
         Editor.disposeCursor();
