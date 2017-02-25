@@ -123,7 +123,12 @@ class Editor {
 
   // do all checks before instantiating a GameObject
   public static CreateCursorAtPos(coordinates: {x: number, y: number}): void {
-    let pickResult: BABYLON.PickingInfo = Game.Instance.getScene().pick(coordinates.x, coordinates.y);
+    let pickResult: BABYLON.PickingInfo = Game.Instance.getScene()
+    .pick(coordinates.x,
+          coordinates.y,
+          function(mesh: BABYLON.AbstractMesh): boolean {
+            return mesh.id !== "Cursor";
+    });
     // if clic hits an object.
     if (pickResult.hit) {
       let mesh: BABYLON.AbstractMesh = pickResult.pickedMesh;

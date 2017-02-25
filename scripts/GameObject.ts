@@ -33,6 +33,10 @@ class GameObject {
   private _lockLocal: Array<BABYLON.Vector3>;
   private _lockWorld: Array<string>;
   private _disposable: boolean;
+  private _isCursor: boolean;
+  public IsCursor(): boolean {
+    return this._isCursor;
+  }
 
   constructor(
     pos: BABYLON.Vector3,
@@ -46,6 +50,7 @@ class GameObject {
     this._ref = ref;
     this._col = col;
     this._disposable = disposable;
+    this._isCursor = isCursor;
 
     this.Initialize(disposable, isEditor, isCursor);
   }

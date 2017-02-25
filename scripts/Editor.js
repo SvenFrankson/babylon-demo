@@ -91,7 +91,10 @@ var Editor = (function () {
         }
     };
     Editor.CreateCursorAtPos = function (coordinates) {
-        var pickResult = Game.Instance.getScene().pick(coordinates.x, coordinates.y);
+        var pickResult = Game.Instance.getScene()
+            .pick(coordinates.x, coordinates.y, function (mesh) {
+            return mesh.id !== "Cursor";
+        });
         if (pickResult.hit) {
             var mesh = pickResult.pickedMesh;
             if (mesh) {

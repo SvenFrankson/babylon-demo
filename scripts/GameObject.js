@@ -8,6 +8,7 @@ var GameObject = (function () {
         this._ref = ref;
         this._col = col;
         this._disposable = disposable;
+        this._isCursor = isCursor;
         this.Initialize(disposable, isEditor, isCursor);
     }
     GameObject.DebugOutputInstances = function () {
@@ -27,6 +28,9 @@ var GameObject = (function () {
     };
     GameObject.prototype.GetCol = function () {
         return this._col;
+    };
+    GameObject.prototype.IsCursor = function () {
+        return this._isCursor;
     };
     GameObject.GameObjectFromData = function (data) {
         return new GameObject(new BABYLON.Vector3(data.posX, data.posY, data.posZ), data.rot, data.ref, data.col);
