@@ -34,6 +34,9 @@ class LocalLocks {
       LocalLocks.List["l-slide"] = LocalLocks.CreateLocalLock(2, 3, 6);
       LocalLocks.List["xl-slide"] = LocalLocks.CreateLocalLock(2, 3, 8);
 
+      LocalLocks.List["xs-barrel"] = LocalLocks.CreateLocalLock(1, 3, 1);
+      LocalLocks.List["s-barrel"] = LocalLocks.CreateLocalLock(2, 3, 2);
+
       LocalLocks.List["ground"] = LocalLocks.CreateLocalLock(1, 1, 1);
   }
 

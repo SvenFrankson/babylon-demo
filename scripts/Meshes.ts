@@ -36,7 +36,23 @@ class Meshes {
     Meshes.List["l-slide"] = Meshes.SlideData(2, 3, 6);
     Meshes.List["xl-slide"] = Meshes.SlideData(2, 3, 8);
 
+    Meshes.List["xs-barrel"] = Meshes.VertexDataFromJSON(Data.XSBarrel);
+    Meshes.List["s-barrel"] = Meshes.VertexDataFromJSON(Data.SBarrel);
+
     Meshes.List["ground"] = Meshes.GroundData();
+  }
+
+  public static VertexDataFromJSON(jsonData: string): BABYLON.VertexData {
+    let tmp: BABYLON.VertexData = JSON.parse(jsonData);
+    let vertexData: BABYLON.VertexData = new BABYLON.VertexData();
+    vertexData.positions = tmp.positions;
+    vertexData.normals = tmp.normals;
+    for (let i: number = 0; i < vertexData.normals.length; i++) {
+      vertexData.positions[i] = vertexData.positions[i] / 100.0;
+      vertexData.normals[i] = vertexData.normals[i] / 100.0;
+    }
+    vertexData.indices = tmp.indices;
+    return vertexData;
   }
 
   public static CubicalData(
