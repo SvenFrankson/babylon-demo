@@ -1,6 +1,6 @@
 /// <reference path="../lib/babylon.2.4.d.ts"/>
 class GameObjectData {
-  public id: string;
+  public id: number;
   public posX : number;
   public posY : number;
   public posZ : number;

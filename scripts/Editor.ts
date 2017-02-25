@@ -2,6 +2,10 @@
 // deals with adding/removing elements according to user's inputs.
 class Editor {
 
+  private static readonly frameDelay = 3;
+  private static frameCountSinceLastInstantiation = 0;
+  private static pendingGameObject: Array<GameObjectData> = new Array<GameObjectData>();
+
   private static _ref: string = "cube";
   public static setRef(ref: string): void {
     Editor._ref = ref;
@@ -159,10 +163,24 @@ class Editor {
     return pos;
   }
 
-  public static LoadJSONDescription() {
+  public static LoadJSONDescription(): void {
     let jsonDescription: string = (document.getElementById("load-input-content") as HTMLTextAreaElement).value;
-    alert(jsonDescription);
-    GameObject.InstantiateFromJSON(jsonDescription);
+    let datas: Array<GameObjectData> = JSON.parse(jsonDescription);
+    for (let i: number = 0; i < datas.length; i++) {
+      Editor.pendingGameObject.push(datas[i]);
+    }
+  }
+
+  public static InstantiatePending(): void {
+    if (Editor.frameCountSinceLastInstantiation < Editor.frameDelay) {
+      Editor.frameCountSinceLastInstantiation++;
+      return;
+    }
+    if (Editor.pendingGameObject.length > 0) {
+      let gameObjectData: GameObjectData = Editor.pendingGameObject.splice(0, 1)[0];
+      GameObject.GameObjectFromData(gameObjectData);
+    }
+    Editor.frameCountSinceLastInstantiation = 0;
   }
 }
 

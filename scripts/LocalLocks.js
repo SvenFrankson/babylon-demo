@@ -20,6 +20,11 @@ var LocalLocks = (function () {
         LocalLocks.List["m-plate"] = LocalLocks.CreateLocalLock(2, 1, 4);
         LocalLocks.List["l-plate"] = LocalLocks.CreateLocalLock(2, 1, 6);
         LocalLocks.List["xl-plate"] = LocalLocks.CreateLocalLock(2, 1, 8);
+        LocalLocks.List["xs-slide"] = LocalLocks.CreateLocalLock(2, 3, 2);
+        LocalLocks.List["s-slide"] = LocalLocks.CreateLocalLock(2, 3, 2);
+        LocalLocks.List["m-slide"] = LocalLocks.CreateLocalLock(2, 3, 4);
+        LocalLocks.List["l-slide"] = LocalLocks.CreateLocalLock(2, 3, 6);
+        LocalLocks.List["xl-slide"] = LocalLocks.CreateLocalLock(2, 3, 8);
         LocalLocks.List["ground"] = LocalLocks.CreateLocalLock(1, 1, 1);
     };
     LocalLocks.CreateLocalLock = function (width, height, length) {

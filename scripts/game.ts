@@ -39,6 +39,7 @@ class Game {
   animate(): void {
     this._engine.runRenderLoop(() => {
       this._scene.render();
+      Editor.InstantiatePending();
     });
 
     window.addEventListener("resize", () => {
@@ -60,5 +61,4 @@ window.addEventListener("DOMContentLoaded", () => {
   Editor.setPreview();
 
   new GameObject(new BABYLON.Vector3(0, -1, 0), 0, "ground", "Lime", false);
-  //GameObject.InstantiateFromJSON('[{"id":0,"posX":0,"posY":-1,"posZ":0,"rot":0,"ref":"ground","col":"Lime"},{"id":1,"posX":0,"posY":-1,"posZ":0,"rot":0,"ref":"ground","col":"Lime"},{"id":2,"posX":-1,"posY":0,"posZ":0,"rot":0,"ref":"m-bar","col":"Blue"},{"id":3,"posX":2,"posY":0,"posZ":0,"rot":0,"ref":"m-bar","col":"Blue"},{"id":4,"posX":-1,"posY":1,"posZ":0,"rot":1,"ref":"m-bar","col":"Blue"},{"id":5,"posX":-1,"posY":1,"posZ":3,"rot":1,"ref":"m-bar","col":"Blue"},{"id":7,"posX":2,"posY":2,"posZ":3,"rot":2,"ref":"m-bar","col":"Red"},{"id":8,"posX":2,"posY":3,"posZ":0,"rot":3,"ref":"m-bar","col":"Red"},{"id":9,"posX":2,"posY":3,"posZ":3,"rot":3,"ref":"m-bar","col":"Red"},{"id":10,"posX":-1,"posY":4,"posZ":0,"rot":0,"ref":"m-bar","col":"Yellow"},{"id":12,"posX":-1,"posY":5,"posZ":0,"rot":1,"ref":"m-bar","col":"Yellow"},{"id":13,"posX":-1,"posY":5,"posZ":3,"rot":1,"ref":"m-bar","col":"Yellow"},{"id":15,"posX":2,"posY":6,"posZ":3,"rot":2,"ref":"m-bar","col":"Lime"},{"id":16,"posX":2,"posY":7,"posZ":0,"rot":3,"ref":"m-bar","col":"Lime"},{"id":17,"posX":2,"posY":7,"posZ":3,"rot":3,"ref":"m-bar","col":"Lime"},{"id":18,"posX":-1,"posY":6,"posZ":0,"rot":0,"ref":"l-bar","col":"Yellow"},{"id":19,"posX":2,"posY":4,"posZ":3,"rot":2,"ref":"l-bar","col":"Red"},{"id":20,"posX":-1,"posY":2,"posZ":0,"rot":0,"ref":"l-bar","col":"Blue"}]');
 });

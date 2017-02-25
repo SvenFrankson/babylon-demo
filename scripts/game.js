@@ -27,6 +27,7 @@ var Game = (function () {
         var _this = this;
         this._engine.runRenderLoop(function () {
             _this._scene.render();
+            Editor.InstantiatePending();
         });
         window.addEventListener("resize", function () {
             _this._engine.resize();

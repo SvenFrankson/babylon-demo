@@ -124,11 +124,27 @@ var Editor = (function () {
     };
     Editor.LoadJSONDescription = function () {
         var jsonDescription = document.getElementById("load-input-content").value;
-        alert(jsonDescription);
-        GameObject.InstantiateFromJSON(jsonDescription);
+        var datas = JSON.parse(jsonDescription);
+        for (var i = 0; i < datas.length; i++) {
+            Editor.pendingGameObject.push(datas[i]);
+        }
+    };
+    Editor.InstantiatePending = function () {
+        if (Editor.frameCountSinceLastInstantiation < Editor.frameDelay) {
+            Editor.frameCountSinceLastInstantiation++;
+            return;
+        }
+        if (Editor.pendingGameObject.length > 0) {
+            var gameObjectData = Editor.pendingGameObject.splice(0, 1)[0];
+            GameObject.GameObjectFromData(gameObjectData);
+        }
+        Editor.frameCountSinceLastInstantiation = 0;
     };
     return Editor;
 }());
+Editor.frameDelay = 3;
+Editor.frameCountSinceLastInstantiation = 0;
+Editor.pendingGameObject = new Array();
 Editor._ref = "cube";
 Editor._color = "Red";
 Editor._rot = 0;

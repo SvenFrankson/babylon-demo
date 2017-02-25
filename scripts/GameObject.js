@@ -190,12 +190,6 @@ var GameObject = (function () {
         }
         return JSON.stringify(datas);
     };
-    GameObject.InstantiateFromJSON = function (jsonDatas) {
-        var datas = JSON.parse(jsonDatas);
-        for (var i = 0; i < datas.length; i++) {
-            GameObject.GameObjectFromData(datas[i]);
-        }
-    };
     return GameObject;
 }());
 GameObject.Id = 0;

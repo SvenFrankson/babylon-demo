@@ -233,11 +233,4 @@ class GameObject {
     }
     return JSON.stringify(datas);
   }
-
-  public static InstantiateFromJSON(jsonDatas: string): void {
-    let datas: Array<GameObjectData> = JSON.parse(jsonDatas);
-    for (let i: number = 0; i < datas.length; i++) {
-      GameObject.GameObjectFromData(datas[i]);
-    }
-  }
 }
