@@ -11,6 +11,11 @@ class Game {
   getScene(): BABYLON.Scene {
     return this._scene;
   }
+  private _cameraTarget: BABYLON.Vector3 = BABYLON.Vector3.Zero();
+  public CameraTargetAdd(vector: BABYLON.Vector3): void {
+    this._cameraTarget = this._cameraTarget.add(vector);
+    this._camera.setTarget(this._cameraTarget);
+  }
   private _camera: BABYLON.ArcRotateCamera;
   getCamera(): BABYLON.ArcRotateCamera {
     return this._camera;
@@ -27,7 +32,7 @@ class Game {
     this._scene = new BABYLON.Scene(this._engine);
 
     this._camera = new BABYLON.ArcRotateCamera("camera", 1, 0.8, 10, new BABYLON.Vector3(0, 0, 0), this._scene);
-    this._camera.setTarget(BABYLON.Vector3.Zero());
+    this._camera.setTarget(Game.Instance._cameraTarget);
     this._camera.attachControl(this._canvas, false);
     this._camera.wheelPrecision = 10;
 
@@ -59,6 +64,13 @@ window.addEventListener("DOMContentLoaded", () => {
   Meshes.Initialize();
   LocalLocks.Initialize();
   Editor.setPreview();
+
+  document.getElementById("camera-up").addEventListener("click", () => {
+    Game.Instance.CameraTargetAdd(new BABYLON.Vector3(0, 1, 0));
+  });
+  document.getElementById("camera-down").addEventListener("click", () => {
+    Game.Instance.CameraTargetAdd(new BABYLON.Vector3(0, -1, 0));
+  });
 
   new GameObject(new BABYLON.Vector3(0, -1, 0), 0, "ground", "Lime", false);
 });

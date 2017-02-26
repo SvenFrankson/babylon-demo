@@ -36,6 +36,12 @@ class Meshes {
     Meshes.List["l-slide"] = Meshes.SlideData(2, 3, 6);
     Meshes.List["xl-slide"] = Meshes.SlideData(2, 3, 8);
 
+    Meshes.List["xs-edge"] = Meshes.SlideData(2, 6, 1);
+    Meshes.List["s-edge"] = Meshes.SlideData(2, 6, 2);
+    Meshes.List["m-edge"] = Meshes.SlideData(2, 6, 4);
+    Meshes.List["l-edge"] = Meshes.SlideData(2, 6, 6);
+    Meshes.List["xl-edge"] = Meshes.SlideData(2, 6, 8);
+
     Meshes.List["xs-barrel"] = Meshes.VertexDataFromJSON(Data.XSBarrel);
     Meshes.List["s-barrel"] = Meshes.VertexDataFromJSON(Data.SBarrel);
 
@@ -125,8 +131,8 @@ class Meshes {
     vertices[7] = new Array<number>(-0.5, -0.5 + height, -0.5 + length);
     vertices[8] = new Array<number>(-0.5 + width, -0.5, -0.5);
     vertices[9] = new Array<number>(-0.5 + width, -0.5, -0.5 + length);
-    vertices[10] = new Array<number>(-0.5 + width, -0.5 + height / 3.0, -0.5);
-    vertices[11] = new Array<number>(-0.5 + width, -0.5 + height / 3.0, -0.5 + length);
+    vertices[10] = new Array<number>(-0.5 + width, 0.5, -0.5);
+    vertices[11] = new Array<number>(-0.5 + width, 0.5, -0.5 + length);
 
     for (let i: number = 0; i < vertices.length; i++) {
       vertices[i][0] = vertices[i][0] * Data.XSize;

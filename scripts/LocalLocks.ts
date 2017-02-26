@@ -28,11 +28,17 @@ class LocalLocks {
       LocalLocks.List["l-plate"] = LocalLocks.CreateLocalLock(2, 1, 6);
       LocalLocks.List["xl-plate"] = LocalLocks.CreateLocalLock(2, 1, 8);
 
-      LocalLocks.List["xs-slide"] = LocalLocks.CreateLocalLock(2, 3, 2);
+      LocalLocks.List["xs-slide"] = LocalLocks.CreateLocalLock(2, 3, 1);
       LocalLocks.List["s-slide"] = LocalLocks.CreateLocalLock(2, 3, 2);
       LocalLocks.List["m-slide"] = LocalLocks.CreateLocalLock(2, 3, 4);
       LocalLocks.List["l-slide"] = LocalLocks.CreateLocalLock(2, 3, 6);
       LocalLocks.List["xl-slide"] = LocalLocks.CreateLocalLock(2, 3, 8);
+
+      LocalLocks.List["xs-edge"] = LocalLocks.CreateLocalLock(2, 6, 1);
+      LocalLocks.List["s-edge"] = LocalLocks.CreateLocalLock(2, 6, 2);
+      LocalLocks.List["m-edge"] = LocalLocks.CreateLocalLock(2, 6, 4);
+      LocalLocks.List["l-edge"] = LocalLocks.CreateLocalLock(2, 6, 6);
+      LocalLocks.List["xl-edge"] = LocalLocks.CreateLocalLock(2, 6, 8);
 
       LocalLocks.List["xs-barrel"] = LocalLocks.CreateLocalLock(1, 3, 1);
       LocalLocks.List["s-barrel"] = LocalLocks.CreateLocalLock(2, 3, 2);

@@ -29,6 +29,7 @@
     <div class="col-xs-8">
       <button type="button" class="btn btn-default disabled">Samples <span class="glyphicon glyphicon-chevron-right"></span></button>
       <button id="castle" type="button" class="btn btn-default">Castle</button>
+      <button id="author" type="button" class="btn btn-default">Author</button>
       <canvas id="renderCanvas"></canvas>
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -88,6 +89,14 @@
               <button id="delete" type="button" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
             </div>
           </div>
+          <br/>
+          <div class="row">
+            <div class="btn-group-vertical" role="group">
+              <button id="camera-up" type="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-up"></span></button>
+              <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-camera"></span></button>
+              <button id="camera-down" type="button" class="btn btn-default"><span class="glyphicon glyphicon-arrow-down"></span></button>
+            </div>
+          </div>
         </div>
         <div class="col-xs-10">
           <div class="panel panel-default">
@@ -111,6 +120,7 @@
                     <li><a data-toggle="pill" href="#lines">Lines</a></li>
                     <li><a data-toggle="pill" href="#plates">Plates</a></li>
                     <li><a data-toggle="pill" href="#slides">Slides</a></li>
+                    <li><a data-toggle="pill" href="#edges">Edges</a></li>
                     <li><a data-toggle="pill" href="#barrels">Barrels</a></li>
                     <li><a data-toggle="pill" href="#props">Props</a></li>
                   </ul>
@@ -158,6 +168,15 @@
                         <button id="m-slide" type="button" class="btn btn-default shape-picker">M-Slide</button>
                         <button id="l-slide" type="button" class="btn btn-default shape-picker">L-Slide</button>
                         <button id="xl-slide" type="button" class="btn btn-default shape-picker">XL-Slide</button>
+                      </div>
+                    </div>
+                    <div id="edges" class="tab-pane fade">
+                      <div class="btn-group-vertical" role="group">
+                        <button id="xs-edge" type="button" class="btn btn-default shape-picker">XS-Edge</button>
+                        <button id="s-edge" type="button" class="btn btn-default shape-picker">S-Edge</button>
+                        <button id="m-edge" type="button" class="btn btn-default shape-picker">M-Edge</button>
+                        <button id="l-edge" type="button" class="btn btn-default shape-picker">L-Edge</button>
+                        <button id="xl-edge" type="button" class="btn btn-default shape-picker">XL-Edge</button>
                       </div>
                     </div>
                     <div id="barrels" class="tab-pane fade">

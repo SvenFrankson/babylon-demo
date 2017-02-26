@@ -187,6 +187,9 @@ window.addEventListener("DOMContentLoaded", function () {
     document.getElementById("castle").addEventListener("click", function () {
         Editor.LoadJSONDescription(Data.Castle);
     });
+    document.getElementById("author").addEventListener("click", function () {
+        Editor.LoadJSONDescription(Data.Author);
+    });
     document.getElementById("rotate").addEventListener("click", function () {
         Editor.rotate();
     });

@@ -221,6 +221,9 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("castle").addEventListener("click", () => {
     Editor.LoadJSONDescription(Data.Castle);
   });
+  document.getElementById("author").addEventListener("click", () => {
+    Editor.LoadJSONDescription(Data.Author);
+  });
   document.getElementById("rotate").addEventListener("click", () => {
     Editor.rotate();
   });

@@ -1,5 +1,6 @@
 var Game = (function () {
     function Game(canvasElement) {
+        this._cameraTarget = BABYLON.Vector3.Zero();
         Game.Instance = this;
         this._canvas = document.getElementById(canvasElement);
         this._engine = new BABYLON.Engine(this._canvas, true);
@@ -10,13 +11,17 @@ var Game = (function () {
     Game.prototype.getScene = function () {
         return this._scene;
     };
+    Game.prototype.CameraTargetAdd = function (vector) {
+        this._cameraTarget = this._cameraTarget.add(vector);
+        this._camera.setTarget(this._cameraTarget);
+    };
     Game.prototype.getCamera = function () {
         return this._camera;
     };
     Game.prototype.createScene = function () {
         this._scene = new BABYLON.Scene(this._engine);
         this._camera = new BABYLON.ArcRotateCamera("camera", 1, 0.8, 10, new BABYLON.Vector3(0, 0, 0), this._scene);
-        this._camera.setTarget(BABYLON.Vector3.Zero());
+        this._camera.setTarget(Game.Instance._cameraTarget);
         this._camera.attachControl(this._canvas, false);
         this._camera.wheelPrecision = 10;
         this._light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), this._scene);
@@ -46,5 +51,11 @@ window.addEventListener("DOMContentLoaded", function () {
     Meshes.Initialize();
     LocalLocks.Initialize();
     Editor.setPreview();
+    document.getElementById("camera-up").addEventListener("click", function () {
+        Game.Instance.CameraTargetAdd(new BABYLON.Vector3(0, 1, 0));
+    });
+    document.getElementById("camera-down").addEventListener("click", function () {
+        Game.Instance.CameraTargetAdd(new BABYLON.Vector3(0, -1, 0));
+    });
     new GameObject(new BABYLON.Vector3(0, -1, 0), 0, "ground", "Lime", false);
 });
