@@ -30,12 +30,14 @@ class Meshes {
     Meshes.List["l-plate"] = Meshes.CubicalData(2, 1, 6);
     Meshes.List["xl-plate"] = Meshes.CubicalData(2, 1, 8);
 
+    Meshes.List["corner-slide"] = Meshes.VertexDataFromJSON(Data.SlideCorner);
     Meshes.List["xs-slide"] = Meshes.SlideData(2, 3, 1);
     Meshes.List["s-slide"] = Meshes.SlideData(2, 3, 2);
     Meshes.List["m-slide"] = Meshes.SlideData(2, 3, 4);
     Meshes.List["l-slide"] = Meshes.SlideData(2, 3, 6);
     Meshes.List["xl-slide"] = Meshes.SlideData(2, 3, 8);
 
+    Meshes.List["corner-edge"] = Meshes.VertexDataFromJSON(Data.EdgeCorner);
     Meshes.List["xs-edge"] = Meshes.SlideData(2, 6, 1);
     Meshes.List["s-edge"] = Meshes.SlideData(2, 6, 2);
     Meshes.List["m-edge"] = Meshes.SlideData(2, 6, 4);
