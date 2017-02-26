@@ -3,10 +3,6 @@
 class GameObject {
   private static Id: number = 0;
   private static Instances: Array<GameObject> = new Array<GameObject>();
-  // for debug purpose mostly
-  public static DebugOutputInstances(): void {
-    document.getElementById("save-output").innerHTML = GameObject.InstancesToJSON();
-  }
   // list all locks taken by activate gameobjects.
   private static Locks: Array<string> = new Array<string>();
   private _id: number;
@@ -220,7 +216,6 @@ class GameObject {
     let id: number = parseInt(idString, 10);
     console.log(id);
     if (id !== NaN) {
-      GameObject.DebugOutputInstances();
       return GameObject.Instances[id];
     }
     return null;

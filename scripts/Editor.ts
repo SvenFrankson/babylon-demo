@@ -198,6 +198,9 @@ window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("keydown", Editor.OnKeyDown);
   document.getElementById("renderCanvas").addEventListener("click", Editor.OnClick);
   document.getElementById("load-input-btn").addEventListener("click", Editor.LoadInput);
+  document.getElementById("save-input-btn").addEventListener("click", () => {
+    document.getElementById("save-output").innerHTML = GameObject.InstancesToJSON();
+  });
   document.getElementById("renderCanvas").addEventListener("mousemove", Editor.OnMouseOver);
   document.getElementById("renderCanvas").addEventListener("mouseout", () => {
     Editor.disposeCursor();

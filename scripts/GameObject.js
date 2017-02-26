@@ -11,9 +11,6 @@ var GameObject = (function () {
         this._isCursor = isCursor;
         this.Initialize(disposable, isEditor, isCursor);
     }
-    GameObject.DebugOutputInstances = function () {
-        document.getElementById("save-output").innerHTML = GameObject.InstancesToJSON();
-    };
     GameObject.prototype.GetId = function () {
         return this._id;
     };
@@ -177,7 +174,6 @@ var GameObject = (function () {
         var id = parseInt(idString, 10);
         console.log(id);
         if (id !== NaN) {
-            GameObject.DebugOutputInstances();
             return GameObject.Instances[id];
         }
         return null;
