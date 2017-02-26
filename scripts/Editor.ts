@@ -168,8 +168,12 @@ class Editor {
     return pos;
   }
 
-  public static LoadJSONDescription(): void {
+  public static LoadInput(): void {
     let jsonDescription: string = (document.getElementById("load-input-content") as HTMLTextAreaElement).value;
+    Editor.LoadJSONDescription(jsonDescription);
+  }
+
+  public static LoadJSONDescription(jsonDescription: string): void {
     let datas: Array<GameObjectData> = JSON.parse(jsonDescription);
     for (let i: number = 0; i < datas.length; i++) {
       Editor.pendingGameObject.push(datas[i]);
@@ -193,7 +197,7 @@ class Editor {
 window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("keydown", Editor.OnKeyDown);
   document.getElementById("renderCanvas").addEventListener("click", Editor.OnClick);
-  document.getElementById("load-input-btn").addEventListener("click", Editor.LoadJSONDescription);
+  document.getElementById("load-input-btn").addEventListener("click", Editor.LoadInput);
   document.getElementById("renderCanvas").addEventListener("mousemove", Editor.OnMouseOver);
   document.getElementById("renderCanvas").addEventListener("mouseout", () => {
     Editor.disposeCursor();
@@ -214,6 +218,9 @@ window.addEventListener("DOMContentLoaded", () => {
       Editor.setRef(htmlShape.id);
     });
   }
+  document.getElementById("castle").addEventListener("click", () => {
+    Editor.LoadJSONDescription(Data.Castle);
+  });
   document.getElementById("rotate").addEventListener("click", () => {
     Editor.rotate();
   });

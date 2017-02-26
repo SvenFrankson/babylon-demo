@@ -125,8 +125,11 @@ var Editor = (function () {
         pos.z = Math.round(pos.z);
         return pos;
     };
-    Editor.LoadJSONDescription = function () {
+    Editor.LoadInput = function () {
         var jsonDescription = document.getElementById("load-input-content").value;
+        Editor.LoadJSONDescription(jsonDescription);
+    };
+    Editor.LoadJSONDescription = function (jsonDescription) {
         var datas = JSON.parse(jsonDescription);
         for (var i = 0; i < datas.length; i++) {
             Editor.pendingGameObject.push(datas[i]);
@@ -155,7 +158,7 @@ Editor._cursorPos = new BABYLON.Vector3(0, 0, 0);
 window.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("keydown", Editor.OnKeyDown);
     document.getElementById("renderCanvas").addEventListener("click", Editor.OnClick);
-    document.getElementById("load-input-btn").addEventListener("click", Editor.LoadJSONDescription);
+    document.getElementById("load-input-btn").addEventListener("click", Editor.LoadInput);
     document.getElementById("renderCanvas").addEventListener("mousemove", Editor.OnMouseOver);
     document.getElementById("renderCanvas").addEventListener("mouseout", function () {
         Editor.disposeCursor();
@@ -181,6 +184,9 @@ window.addEventListener("DOMContentLoaded", function () {
     for (var i = 0; i < shapes.length; i++) {
         _loop_2(i);
     }
+    document.getElementById("castle").addEventListener("click", function () {
+        Editor.LoadJSONDescription(Data.Castle);
+    });
     document.getElementById("rotate").addEventListener("click", function () {
         Editor.rotate();
     });
