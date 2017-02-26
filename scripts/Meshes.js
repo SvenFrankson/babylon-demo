@@ -28,6 +28,7 @@ var Meshes = (function () {
         Meshes.List["xl-slide"] = Meshes.SlideData(2, 3, 8);
         Meshes.List["xs-barrel"] = Meshes.VertexDataFromJSON(Data.XSBarrel);
         Meshes.List["s-barrel"] = Meshes.VertexDataFromJSON(Data.SBarrel);
+        Meshes.List["flame"] = Meshes.VertexDataFromJSON(Data.Flame);
         Meshes.List["ground"] = Meshes.GroundData();
     };
     Meshes.VertexDataFromJSON = function (jsonData) {

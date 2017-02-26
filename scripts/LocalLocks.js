@@ -27,6 +27,7 @@ var LocalLocks = (function () {
         LocalLocks.List["xl-slide"] = LocalLocks.CreateLocalLock(2, 3, 8);
         LocalLocks.List["xs-barrel"] = LocalLocks.CreateLocalLock(1, 3, 1);
         LocalLocks.List["s-barrel"] = LocalLocks.CreateLocalLock(2, 3, 2);
+        LocalLocks.List["flame"] = LocalLocks.CreateLocalLock(1, 9, 1);
         LocalLocks.List["ground"] = LocalLocks.CreateLocalLock(1, 1, 1);
     };
     LocalLocks.CreateLocalLock = function (width, height, length) {
