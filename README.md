@@ -1,6 +1,8 @@
 # babylon-demo
 BabylonJS demo for academic purpose.
 
+![preview screenshot](http://svenfrankson.github.io/wiki/img/babylondemo/mainScreenshot.PNG)
+
 # Try it here !
 
 Go to http://svenfrankson.github.io/BabylonDemoWeb/index.html
